@@ -41,7 +41,7 @@ export const projects: Project[] = [
       '/projects/habitails/screen-3.png',
       '/projects/habitails/screen-4.png',
     ],
-    links: { playstore: null, appstore: null, website: null },
+    links: { playstore: 'https://play.google.com/store/apps/details?id=habit.planet.fitness.game.calendar.habitails&hl=en_US', appstore: null, website: null },
     tags: ['Gamification', 'Habit Tracking', 'Wellness', 'Android'],
   },
   {
@@ -59,7 +59,7 @@ export const projects: Project[] = [
       '/projects/pro-workout/screen-3.png',
       '/projects/pro-workout/screen-4.png',
     ],
-    links: { playstore: null, appstore: null, website: null },
+    links: { playstore: 'https://play.google.com/store/apps/details?id=com.overloadapps.proo', appstore: 'https://apps.apple.com/us/app/pr-o-workout-tracker-gym-log/id6758912247', website: null },
     tags: ['Performance Analytics', 'Strength Training', 'Android', 'iOS'],
   },
   {
@@ -77,7 +77,7 @@ export const projects: Project[] = [
       '/projects/lift4fit/screen-3.png',
       '/projects/lift4fit/screen-4.png',
     ],
-    links: { playstore: null, appstore: null, website: null },
+    links: { playstore: 'https://play.google.com/store/apps/details?id=com.sarasoftapps.com.workoutlogger', appstore: 'https://apps.apple.com/us/app/lift4fit-gym-workout-logger/id1551467892', website: null },
     tags: ['Privacy-First', 'Strength Training', 'Android', 'iOS'],
   },
   {
@@ -95,7 +95,7 @@ export const projects: Project[] = [
       '/projects/interval-weight-loss/screen-3.png',
       '/projects/interval-weight-loss/screen-4.png',
     ],
-    links: { playstore: null, appstore: null, website: null },
+    links: { playstore: 'https://play.google.com/store/apps/details?id=com.iwl.app', appstore: null, website: 'https://intervalweightloss.com' },
     tags: ['Evidence-Based', 'Nutrition', 'Weight Management', 'Android'],
   },
   {
@@ -113,7 +113,7 @@ export const projects: Project[] = [
       '/projects/healthblocks/screen-3.png',
       '/projects/healthblocks/screen-4.png',
     ],
-    links: { playstore: null, appstore: null, website: null },
+    links: { playstore: 'https://play.google.com/store/apps/details?id=com.app.healthblocks', appstore: 'https://apps.apple.com/nl/app/healthblocks-all-about-health/id6502659174', website: 'https://www.healthblocks.ai' },
     tags: ['Wearables', 'Community', 'Wellness', 'Android', 'iOS'],
   },
   {
@@ -131,7 +131,7 @@ export const projects: Project[] = [
       '/projects/beyond-body/screen-3.png',
       '/projects/beyond-body/screen-4.png',
     ],
-    links: { playstore: null, appstore: null, website: null },
+    links: { playstore: 'https://play.google.com/store/apps/details?id=com.kilogroup.fastingplan', appstore: null, website: 'https://woman.beyondbody.me' },
     tags: ['Intermittent Fasting', 'Holistic Wellness', 'Android', 'iOS'],
   },
   {
@@ -149,7 +149,7 @@ export const projects: Project[] = [
       '/projects/nearcircle/screen-3.png',
       '/projects/nearcircle/screen-4.png',
     ],
-    links: { playstore: null, appstore: null, website: null },
+    links: { playstore: 'https://play.google.com/store/apps/details?id=com.pillarsis.nearcircle', appstore: null, website: 'https://nearcircl.com' },
     tags: ['Location-Based', 'Anonymous', 'Community', 'Android'],
   },
   {
@@ -167,7 +167,7 @@ export const projects: Project[] = [
       '/projects/vibe/screen-3.png',
       '/projects/vibe/screen-4.png',
     ],
-    links: { playstore: null, appstore: null, website: null },
+    links: { playstore: 'https://play.google.com/store/apps/details?id=com.socialvibe.vibe', appstore: 'https://apps.apple.com/us/app/vibe-social-map/id6756848698', website: 'https://vibesocialmap.app' },
     tags: ['Real-Time', 'Social Discovery', 'Live Map', 'Android', 'iOS'],
   },
   {
@@ -185,7 +185,7 @@ export const projects: Project[] = [
       '/projects/hoyzee/screen-3.png',
       '/projects/hoyzee/screen-4.png',
     ],
-    links: { playstore: null, appstore: null, website: null },
+    links: { playstore: 'https://play.google.com/store/apps/details?id=com.hozyee_app.hoyzee', appstore: 'https://apps.apple.com/us/app/hoyzee/id1540325360', website: null },
     tags: ['Live Map', 'Food Discovery', 'Local', 'Android', 'iOS'],
   },
   {
@@ -203,7 +203,7 @@ export const projects: Project[] = [
       '/projects/rural-response/screen-3.png',
       '/projects/rural-response/screen-4.png',
     ],
-    links: { playstore: null, appstore: null, website: null },
+    links: { playstore: 'https://play.google.com/store/apps/details?id=com.rural.ruralresponse', appstore: null, website: 'https://rural-response.com' },
     tags: ['Emergency Alerts', 'Community Safety', 'Rural', 'Android'],
   },
   {
@@ -221,7 +221,7 @@ export const projects: Project[] = [
       '/projects/jacobs-dry-cleaners/screen-3.png',
       '/projects/jacobs-dry-cleaners/screen-4.png',
     ],
-    links: { playstore: null, appstore: null, website: null },
+    links: { playstore: 'https://play.google.com/store/apps/details?id=com.jacobsdrycleaners.jacobsapp', appstore: 'https://apps.apple.com/us/app/jacobs-dry-cleaners/id6468426753', website: null },
     tags: ['On-Demand', 'Local Services', 'Android', 'iOS'],
   },
 ];
