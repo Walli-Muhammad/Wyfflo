@@ -38,6 +38,7 @@ const subheadlines = [
 
 export default function Hero() {
   const [textIndex, setTextIndex] = useState(0);
+  const [introEnded, setIntroEnded] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mouseRef = useRef({ x: -1000, y: -1000 });
 
@@ -164,15 +165,16 @@ export default function Hero() {
       
       {/* Video Background */}
       <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center">
-        <video 
-          autoPlay 
-          loop 
-          muted 
-          playsInline 
-          className="min-w-full min-h-full object-cover opacity-60"
-        >
-          <source src="/videos/blackhole.mp4" type="video/mp4" />
-        </video>
+        <video
+          key={introEnded ? "hero-2" : "hero-1"}
+          src={introEnded ? "/videos/hero-2.mp4" : "/videos/hero-1.mp4"}
+          autoPlay
+          muted
+          playsInline
+          loop={introEnded}
+          onEnded={() => setIntroEnded(true)}
+          className="w-full h-full object-cover opacity-60"
+        />
         {/* Subtle grid overlay to keep the texture */}
         <div
           className="absolute inset-0 opacity-[0.03]"
@@ -193,7 +195,7 @@ export default function Hero() {
       />
 
       <motion.div
-        className="max-w-screen-xl mx-auto w-full flex flex-col items-center text-center relative z-10"
+        className="max-w-screen-xl mx-auto w-full flex flex-col items-center text-center relative z-[2]"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
