@@ -2,8 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const STEPS = [
   {
@@ -184,7 +182,7 @@ export default function ProcessSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeStep, setActiveStep] = useState(0);
   const [progress, setProgress] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(true);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -195,33 +193,53 @@ export default function ProcessSection() {
 
   useEffect(() => {
     if (isMobile) return;
+    if (typeof window === "undefined" || window.innerWidth < 768) return;
 
-    gsap.registerPlugin(ScrollTrigger);
+    let ctx: any;
+    let isCancelled = false;
 
-    const ctx = gsap.context(() => {
-      const container = containerRef.current;
-      if (!container) return;
+    const initGSAP = async () => {
+      try {
+        const { default: gsap } = await import("gsap");
+        const { ScrollTrigger } = await import("gsap/ScrollTrigger");
 
-      const totalSteps = STEPS.length;
+        if (isCancelled) return;
 
-      ScrollTrigger.create({
-        trigger: container,
-        start: "top top",
-        end: `+=${totalSteps * 100}%`,
-        pin: true,
-        scrub: 0.5,
-        onUpdate: (self) => {
-          const newStep = Math.min(
-            Math.floor(self.progress * totalSteps),
-            totalSteps - 1
-          );
-          setActiveStep(newStep);
-          setProgress(self.progress);
-        },
-      });
-    }, sectionRef);
+        gsap.registerPlugin(ScrollTrigger);
 
-    return () => ctx.revert();
+        ctx = gsap.context(() => {
+          const container = containerRef.current;
+          if (!container) return;
+
+          const totalSteps = STEPS.length;
+
+          ScrollTrigger.create({
+            trigger: container,
+            start: "top top",
+            end: `+=${totalSteps * 100}%`,
+            pin: true,
+            scrub: 0.5,
+            onUpdate: (self) => {
+              const newStep = Math.min(
+                Math.floor(self.progress * totalSteps),
+                totalSteps - 1
+              );
+              setActiveStep(newStep);
+              setProgress(self.progress);
+            },
+          });
+        }, sectionRef);
+      } catch (error) {
+        console.error("GSAP ScrollTrigger initialization failed:", error);
+      }
+    };
+
+    initGSAP();
+
+    return () => {
+      isCancelled = true;
+      if (ctx) ctx.revert();
+    };
   }, [isMobile]);
 
   const ActiveVisual = STEP_VISUALS[activeStep];
