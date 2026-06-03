@@ -24,11 +24,6 @@ export const CATEGORY_COLORS: Record<ProjectCategory, string> = {
   services:  '#b44dff',
 };
 
-const CDN = 'https://res.cloudinary.com/dab60aiwe/image/upload/w_400,f_auto,q_auto';
-
-export function cdnUrl(path: string) {
-  return `${CDN}/${path}`;
-}
 
 export const projects: Project[] = [
   {
@@ -40,10 +35,11 @@ export const projects: Project[] = [
     description:
       'Habitails reimagines the habit tracker as a game worth coming back to every day. Each completed habit grows a virtual pet, creating an emotionally rewarding feedback loop. Pairs gamification with serious wellness tools — productivity, calories, water intake, and focus sessions — turning daily self-improvement into an experience that feels less like discipline and more like play.',
     images: [
-      'wyfflo/projects/habitails/icon',
-      'wyfflo/projects/habitails/screen-1',
-      'wyfflo/projects/habitails/screen-2',
-      'wyfflo/projects/habitails/screen-3',
+      '/projects/habitails/icon.png',
+      '/projects/habitails/screen-1.png',
+      '/projects/habitails/screen-2.png',
+      '/projects/habitails/screen-3.png',
+      '/projects/habitails/screen-4.png',
     ],
     links: { playstore: null, appstore: null, website: null },
     tags: ['Gamification', 'Habit Tracking', 'Wellness', 'Android'],
@@ -57,10 +53,11 @@ export const projects: Project[] = [
     description:
       'PR.O is built for lifters who have outgrown basic set-and-rep logging. It captures progressive overload, RPE, time under tension, muscle-group distribution, and recovery data — feeding detailed analytics that turn raw workout logs into actionable insight. A performance dashboard for dedicated athletes who treat training as a long-term project.',
     images: [
-      'wyfflo/projects/pro-workout/icon',
-      'wyfflo/projects/pro-workout/screen-1',
-      'wyfflo/projects/pro-workout/screen-2',
-      'wyfflo/projects/pro-workout/screen-3',
+      '/projects/pro-workout/icon.png',
+      '/projects/pro-workout/screen-1.png',
+      '/projects/pro-workout/screen-2.png',
+      '/projects/pro-workout/screen-3.png',
+      '/projects/pro-workout/screen-4.png',
     ],
     links: { playstore: null, appstore: null, website: null },
     tags: ['Performance Analytics', 'Strength Training', 'Android', 'iOS'],
@@ -74,10 +71,11 @@ export const projects: Project[] = [
     description:
       'A privacy-first strength training app with a refreshingly simple premise — start training immediately, no account needed. Ships with ready-made programs and supports fully custom workout creation. Smart automatic progression, warm-up calculations, and personal-record tracking give serious functionality without compromising user data.',
     images: [
-      'wyfflo/projects/lift4fit/icon',
-      'wyfflo/projects/lift4fit/screen-1',
-      'wyfflo/projects/lift4fit/screen-2',
-      'wyfflo/projects/lift4fit/screen-3',
+      '/projects/lift4fit/icon.png',
+      '/projects/lift4fit/screen-1.png',
+      '/projects/lift4fit/screen-2.png',
+      '/projects/lift4fit/screen-3.png',
+      '/projects/lift4fit/screen-4.png',
     ],
     links: { playstore: null, appstore: null, website: null },
     tags: ['Privacy-First', 'Strength Training', 'Android', 'iOS'],
@@ -91,10 +89,11 @@ export const projects: Project[] = [
     description:
       'Grounded in a clinically informed method developed at the University of Sydney, Interval Weight Loss is built around lasting results rather than rapid, unsustainable change. Habit tracking, structured meal plans, educational content, and progress monitoring combine to make healthy habits permanent — not temporary sacrifices.',
     images: [
-      'wyfflo/projects/interval-weight-loss/icon',
-      'wyfflo/projects/interval-weight-loss/screen-1',
-      'wyfflo/projects/interval-weight-loss/screen-2',
-      'wyfflo/projects/interval-weight-loss/screen-3',
+      '/projects/interval-weight-loss/icon.png',
+      '/projects/interval-weight-loss/screen-1.png',
+      '/projects/interval-weight-loss/screen-2.png',
+      '/projects/interval-weight-loss/screen-3.png',
+      '/projects/interval-weight-loss/screen-4.png',
     ],
     links: { playstore: null, appstore: null, website: null },
     tags: ['Evidence-Based', 'Nutrition', 'Weight Management', 'Android'],
@@ -108,10 +107,11 @@ export const projects: Project[] = [
     description:
       'A digital health platform that makes healthy living engaging rather than obligatory. Connects with wearables to sync activity data, layers community challenges on top, and delivers personalized wellness insights — all with user privacy kept firmly in focus. A complete ecosystem for building habits that stick beyond the initial burst of enthusiasm.',
     images: [
-      'wyfflo/projects/healthblocks/icon',
-      'wyfflo/projects/healthblocks/screen-1',
-      'wyfflo/projects/healthblocks/screen-2',
-      'wyfflo/projects/healthblocks/screen-3',
+      '/projects/healthblocks/icon.png',
+      '/projects/healthblocks/screen-1.png',
+      '/projects/healthblocks/screen-2.png',
+      '/projects/healthblocks/screen-3.png',
+      '/projects/healthblocks/screen-4.png',
     ],
     links: { playstore: null, appstore: null, website: null },
     tags: ['Wearables', 'Community', 'Wellness', 'Android', 'iOS'],
@@ -125,10 +125,11 @@ export const projects: Project[] = [
     description:
       'Beyond Body treats fasting not as an isolated practice but as one piece of a complete wellness routine — coordinating fasting schedules, nutrition, workouts, water intake, and mood tracking in one cohesive experience. Guided personalized plans, recipe libraries, daily challenges, and educational content make intermittent fasting a sustainable lifestyle.',
     images: [
-      'wyfflo/projects/beyond-body/icon',
-      'wyfflo/projects/beyond-body/screen-1',
-      'wyfflo/projects/beyond-body/screen-2',
-      'wyfflo/projects/beyond-body/screen-3',
+      '/projects/beyond-body/icon.png',
+      '/projects/beyond-body/screen-1.png',
+      '/projects/beyond-body/screen-2.png',
+      '/projects/beyond-body/screen-3.png',
+      '/projects/beyond-body/screen-4.png',
     ],
     links: { playstore: null, appstore: null, website: null },
     tags: ['Intermittent Fasting', 'Holistic Wellness', 'Android', 'iOS'],
@@ -142,10 +143,11 @@ export const projects: Project[] = [
     description:
       'A location-based, anonymous social platform that reconnects people with the community physically surrounding them. Ask questions, share local recommendations, post neighborhood updates, and create polls — all without a public identity. NearCircle creates a network rooted in place rather than personality, lowering barriers to genuine local conversation.',
     images: [
-      'wyfflo/projects/nearcircle/icon',
-      'wyfflo/projects/nearcircle/screen-1',
-      'wyfflo/projects/nearcircle/screen-2',
-      'wyfflo/projects/nearcircle/screen-3',
+      '/projects/nearcircle/icon.png',
+      '/projects/nearcircle/screen-1.png',
+      '/projects/nearcircle/screen-2.png',
+      '/projects/nearcircle/screen-3.png',
+      '/projects/nearcircle/screen-4.png',
     ],
     links: { playstore: null, appstore: null, website: null },
     tags: ['Location-Based', 'Anonymous', 'Community', 'Android'],
@@ -159,10 +161,11 @@ export const projects: Project[] = [
     description:
       'A social discovery app built to solve what traditional social media ignores — actually meeting people in the real world, right now. A live map shows activities and plans happening nearby. Join plans, create your own events, and connect through direct messages and group chats. A genuine social discovery engine that turns idle time into shared experiences.',
     images: [
-      'wyfflo/projects/vibe/icon',
-      'wyfflo/projects/vibe/screen-1',
-      'wyfflo/projects/vibe/screen-2',
-      'wyfflo/projects/vibe/screen-3',
+      '/projects/vibe/icon.png',
+      '/projects/vibe/screen-1.png',
+      '/projects/vibe/screen-2.png',
+      '/projects/vibe/screen-3.png',
+      '/projects/vibe/screen-4.png',
     ],
     links: { playstore: null, appstore: null, website: null },
     tags: ['Real-Time', 'Social Discovery', 'Live Map', 'Android', 'iOS'],
@@ -176,10 +179,11 @@ export const projects: Project[] = [
     description:
       'A food-truck discovery app that bridges a persistent gap in the local food scene — food trucks move, and their fans have no reliable way to find them. A live map displays vendor locations in real time for diners, while giving vendors a dependable channel to reach nearby customers wherever they set up. Both sides of the transaction, solved at once.',
     images: [
-      'wyfflo/projects/hoyzee/icon',
-      'wyfflo/projects/hoyzee/screen-1',
-      'wyfflo/projects/hoyzee/screen-2',
-      'wyfflo/projects/hoyzee/screen-3',
+      '/projects/hoyzee/icon.png',
+      '/projects/hoyzee/screen-1.png',
+      '/projects/hoyzee/screen-2.png',
+      '/projects/hoyzee/screen-3.png',
+      '/projects/hoyzee/screen-4.png',
     ],
     links: { playstore: null, appstore: null, website: null },
     tags: ['Live Map', 'Food Discovery', 'Local', 'Android', 'iOS'],
@@ -193,10 +197,11 @@ export const projects: Project[] = [
     description:
       'An emergency alert app built for a life-or-death reality of rural living — professional services can be far away, and the minutes before help arrives are critical. Rural Response lets users instantly alert nearby community members, mobilizing local responders in the window before official help can reach the scene. A community-driven safety net for remote areas.',
     images: [
-      'wyfflo/projects/rural-response/icon',
-      'wyfflo/projects/rural-response/screen-1',
-      'wyfflo/projects/rural-response/screen-2',
-      'wyfflo/projects/rural-response/screen-3',
+      '/projects/rural-response/icon.png',
+      '/projects/rural-response/screen-1.png',
+      '/projects/rural-response/screen-2.png',
+      '/projects/rural-response/screen-3.png',
+      '/projects/rural-response/screen-4.png',
     ],
     links: { playstore: null, appstore: null, website: null },
     tags: ['Emergency Alerts', 'Community Safety', 'Rural', 'Android'],
@@ -210,10 +215,11 @@ export const projects: Project[] = [
     description:
       'An on-demand dry cleaning and laundry app that brings a traditionally in-person service fully into the digital age for customers in St Albans and North London. Place an order, schedule a collection, and have freshly cleaned garments delivered back to your doorstep — collapsing a multi-step errand into a few taps. A smart modernization of a trusted local business.',
     images: [
-      'wyfflo/projects/jacobs-dry-cleaners/icon',
-      'wyfflo/projects/jacobs-dry-cleaners/screen-1',
-      'wyfflo/projects/jacobs-dry-cleaners/screen-2',
-      'wyfflo/projects/jacobs-dry-cleaners/screen-3',
+      '/projects/jacobs-dry-cleaners/icon.png',
+      '/projects/jacobs-dry-cleaners/screen-1.png',
+      '/projects/jacobs-dry-cleaners/screen-2.png',
+      '/projects/jacobs-dry-cleaners/screen-3.png',
+      '/projects/jacobs-dry-cleaners/screen-4.png',
     ],
     links: { playstore: null, appstore: null, website: null },
     tags: ['On-Demand', 'Local Services', 'Android', 'iOS'],

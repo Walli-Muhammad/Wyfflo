@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   type Project,
   CATEGORY_COLORS,
-  cdnUrl,
 } from "@/data/projects";
 
 // SVGs and Icons
@@ -225,7 +224,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                         className="absolute inset-0 cursor-grab active:cursor-grabbing"
                       >
                         <Image
-                          src={cdnUrl(screenshots[currentIndex])}
+                          src={screenshots[currentIndex]}
                           alt={`${project.name} screenshot ${currentIndex + 1}`}
                           fill
                           className="object-cover pointer-events-none"
@@ -287,7 +286,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
             <div className="flex items-start gap-4">
               <div className="relative w-16 h-16 rounded-2xl overflow-hidden border border-white/10 shrink-0 bg-obsidian-850">
                 <Image
-                  src={cdnUrl(project.images[0])}
+                  src={project.images[0]}
                   alt={`${project.name} icon`}
                   fill
                   className="object-cover"

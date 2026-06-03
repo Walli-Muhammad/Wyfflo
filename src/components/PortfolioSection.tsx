@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   projects,
   categories,
-  cdnUrl,
   CATEGORY_COLORS,
   type Project,
   type ProjectCategory,
@@ -101,7 +100,7 @@ function ProjectCard({
       <div className="flex items-start justify-between gap-3 p-5 pb-3">
         <div className="relative w-14 h-14 rounded-xl overflow-hidden border border-white/10 shrink-0 bg-obsidian-700">
           <Image
-            src={cdnUrl(project.images[0])}
+            src={project.images[0]}
             alt={`${project.name} icon`}
             fill
             className="object-cover"
@@ -137,7 +136,7 @@ function ProjectCard({
             className="transition-transform duration-500 group-hover:-translate-y-1"
             style={{ transitionDelay: `${i * 40}ms` }}
           >
-            <PhoneMockup src={cdnUrl(img)} alt={`${project.name} screenshot ${i + 1}`} />
+            <PhoneMockup src={img} alt={`${project.name} screenshot ${i + 1}`} />
           </motion.div>
         ))}
       </div>
