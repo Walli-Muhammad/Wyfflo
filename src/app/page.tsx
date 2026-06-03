@@ -1,6 +1,6 @@
 import Hero from "@/components/Hero";
 import Services from "@/components/Services";
-import PortfolioGrid from "@/components/PortfolioGrid";
+import PortfolioSection from "@/components/PortfolioSection";
 import ConnectionTab from "@/components/ConnectionTab";
 
 export default function Home() {
@@ -8,7 +8,7 @@ export default function Home() {
     <>
       <Hero />
       <Services />
-      <PortfolioGrid />
+      <PortfolioSection />
       <ConnectionTab />
     </>
   );
