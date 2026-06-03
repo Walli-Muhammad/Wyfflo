@@ -150,7 +150,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
         transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-        className="relative w-full max-w-[900px] max-h-[90vh] overflow-y-auto rounded-2xl bg-obsidian-850 p-6 sm:p-8 md:p-10 border border-white/5 shadow-2xl focus:outline-none"
+        className="relative w-full max-w-[860px] max-h-[90vh] overflow-y-auto rounded-2xl bg-obsidian-850 p-6 sm:p-8 md:p-10 border border-white/5 shadow-2xl focus:outline-none"
         onClick={(e) => e.stopPropagation()}
         tabIndex={-1}
         role="dialog"
@@ -158,6 +158,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
         aria-label={`${project.name} Details`}
         style={{
           boxShadow: `0 0 50px ${accent}12, inset 0 0 0 1px ${accent}25`,
+          background: `radial-gradient(circle at top left, ${accent}15, transparent 60%)`,
         }}
       >
         {/* Close Button */}
@@ -194,13 +195,13 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                 </button>
               )}
 
-              {/* Phone Mockup Frame */}
-              <div className="relative rounded-[32px] bg-obsidian-900 border-[3px] border-white/10 overflow-hidden shadow-2xl aspect-[9/19.5] w-[180px] sm:w-[210px] shrink-0 select-none">
-                {/* Dynamic notch bar */}
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-[11px] bg-obsidian-950 rounded-b-xl z-20" />
+              {/* Phone Mockup Frame — Dark Obsidian */}
+              <div className="relative rounded-[2.5rem] bg-[#111111] border border-white/10 overflow-hidden shadow-2xl aspect-[9/19.5] w-[200px] sm:w-[230px] shrink-0 select-none">
+                {/* Dynamic Island */}
+                <div className="absolute top-3 left-1/2 -translate-x-1/2 w-16 h-4 bg-black rounded-full z-20" />
                 
-                {/* Screenshots Animation Holder */}
-                <div className="relative w-full h-full">
+                {/* Screen Area */}
+                <div className="relative w-full h-full bg-black">
                   <AnimatePresence mode="wait" custom={direction}>
                     {screenshots[currentIndex] && (
                       <motion.div
@@ -228,14 +229,14 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                           alt={`${project.name} screenshot ${currentIndex + 1}`}
                           fill
                           className="object-cover pointer-events-none"
-                          sizes="(max-width: 640px) 180px, 210px"
+                          sizes="(max-width: 640px) 200px, 230px"
                           priority
                           unoptimized={false}
                           onError={(e) => {
                             (e.target as HTMLImageElement).style.opacity = "0";
                           }}
                         />
-                        <div className="absolute inset-0 bg-obsidian-800 -z-10" />
+                        <div className="absolute inset-0 bg-black -z-10" />
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -266,8 +267,8 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                       setDirection(i > currentIndex ? 1 : -1);
                       setCurrentIndex(i);
                     }}
-                    className={`h-1.5 rounded-full transition-all duration-300 ${
-                      i === currentIndex ? "w-6" : "w-1.5"
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      i === currentIndex ? "w-6" : "w-2"
                     }`}
                     style={{
                       backgroundColor: i === currentIndex ? accent : "rgba(255, 255, 255, 0.2)",
@@ -345,7 +346,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                       href={project.links.playstore}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center rounded-full px-5 py-2.5 text-xs font-semibold text-obsidian-950 bg-emerald-500 hover:bg-emerald-400 transition-colors duration-300 shadow-md shadow-emerald-500/10"
+                      className="flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold bg-[#00f5ff] text-black transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,245,255,0.3)]"
                     >
                       <PlayStoreIcon />
                       Play Store
@@ -356,7 +357,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                       href={project.links.appstore}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center rounded-full px-5 py-2.5 text-xs font-semibold text-obsidian-950 bg-white hover:bg-gray-200 transition-colors duration-300 shadow-md shadow-white/10"
+                      className="flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold bg-white text-black transition-all duration-300 hover:bg-gray-100"
                     >
                       <AppleIcon />
                       App Store
@@ -367,7 +368,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                       href={project.links.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center rounded-full px-5 py-2.5 text-xs font-semibold text-obsidian-950 bg-cyan-500 hover:bg-cyan-400 transition-colors duration-300 shadow-md shadow-cyan-500/10"
+                      className="flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold bg-white/10 text-white border border-white/20 transition-all duration-300 hover:bg-white/15"
                     >
                       <WebIcon />
                       Website

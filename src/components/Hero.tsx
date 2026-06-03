@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const containerVariants = {
@@ -38,12 +38,125 @@ const subheadlines = [
 
 export default function Hero() {
   const [textIndex, setTextIndex] = useState(0);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const mouseRef = useRef({ x: -1000, y: -1000 });
 
   useEffect(() => {
     const interval = setInterval(() => {
       setTextIndex((prev) => (prev + 1) % subheadlines.length);
     }, 1500); // Change every 1.5 seconds
     return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let animationId: number;
+
+    // Resize handler
+    const resize = () => {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    };
+    resize();
+    window.addEventListener('resize', resize);
+
+    // Mouse tracking (on the section, not the canvas since it's pointer-events-none)
+    // We need to add the listener to the section/window
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      mouseRef.current = {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+      };
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+
+    // Create particles
+    interface Particle {
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+      radius: number;
+      color: string;
+      baseX: number;
+      baseY: number;
+    }
+
+    const particles: Particle[] = [];
+    const PARTICLE_COUNT = 60;
+
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      const isCyan = Math.random() > 0.6;
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
+        radius: 1 + Math.random() * 1.5,
+        color: isCyan
+          ? `rgba(0, 245, 255, ${0.08 + Math.random() * 0.12})`
+          : `rgba(255, 255, 255, ${0.12 + Math.random() * 0.13})`,
+        baseX: 0,
+        baseY: 0,
+      });
+      particles[i].baseX = particles[i].x;
+      particles[i].baseY = particles[i].y;
+    }
+
+    // Animation loop
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const mouse = mouseRef.current;
+      const REPEL_RADIUS = 120;
+      const REPEL_FORCE = 2;
+
+      for (const p of particles) {
+        // Calculate distance to mouse
+        const dx = p.x - mouse.x;
+        const dy = p.y - mouse.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        // Gentle repulsion from cursor
+        if (dist < REPEL_RADIUS && dist > 0) {
+          const force = (REPEL_RADIUS - dist) / REPEL_RADIUS * REPEL_FORCE;
+          p.x += (dx / dist) * force;
+          p.y += (dy / dist) * force;
+        }
+
+        // Normal drift
+        p.x += p.vx;
+        p.y += p.vy;
+
+        // Wrap around edges
+        if (p.x < -10) p.x = canvas.width + 10;
+        if (p.x > canvas.width + 10) p.x = -10;
+        if (p.y < -10) p.y = canvas.height + 10;
+        if (p.y > canvas.height + 10) p.y = -10;
+
+        // Draw particle
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+      }
+
+      animationId = requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    return () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener('resize', resize);
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
   }, []);
 
   return (
@@ -72,6 +185,12 @@ export default function Hero() {
         {/* Subtle radial gradient to darken edges */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(10,10,12,0.8)_100%)]" />
       </div>
+
+      {/* Particle Canvas Layer */}
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 z-[1] pointer-events-none"
+      />
 
       <motion.div
         className="max-w-screen-xl mx-auto w-full flex flex-col items-center text-center relative z-10"
