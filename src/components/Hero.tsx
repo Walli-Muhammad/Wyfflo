@@ -38,7 +38,7 @@ const subheadlines = [
 
 export default function Hero() {
   const [textIndex, setTextIndex] = useState(0);
-  const [introEnded, setIntroEnded] = useState(false);
+  const [showLoop, setShowLoop] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mouseRef = useRef({ x: -1000, y: -1000 });
 
@@ -164,16 +164,27 @@ export default function Hero() {
     <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden px-6 md:px-12 bg-obsidian-900">
       
       {/* Video Background */}
-      <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center">
+      <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center opacity-60">
         <video
-          key={introEnded ? "hero-2" : "hero-1"}
-          src={introEnded ? "/videos/hero-2.mp4" : "/videos/hero-1.mp4"}
+          src="/videos/hero-1.mp4"
           autoPlay
           muted
           playsInline
-          loop={introEnded}
-          onEnded={() => setIntroEnded(true)}
-          className="w-full h-full object-cover opacity-60"
+          onEnded={() => setShowLoop(true)}
+          className={`w-full h-full object-cover absolute inset-0 transition-opacity duration-300 ease-in-out ${
+            showLoop ? "opacity-0" : "opacity-100"
+          }`}
+        />
+        <video
+          src="/videos/hero-2.mp4"
+          autoPlay
+          muted
+          playsInline
+          loop
+          preload="auto"
+          className={`w-full h-full object-cover absolute inset-0 transition-opacity duration-300 ease-in-out ${
+            showLoop ? "opacity-100" : "opacity-0"
+          }`}
         />
         {/* Subtle grid overlay to keep the texture */}
         <div
