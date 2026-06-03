@@ -11,6 +11,7 @@ import {
   type Project,
   type ProjectCategory,
 } from "@/data/projects";
+import ProjectModal from "@/components/ProjectModal";
 
 /* ─── helpers ─── */
 const PlayStoreIcon = () => (
@@ -62,10 +63,12 @@ function ProjectCard({
   project,
   featured = false,
   index,
+  onClick,
 }: {
   project: Project;
   featured?: boolean;
   index: number;
+  onClick: () => void;
 }) {
   const accent = CATEGORY_COLORS[project.category];
   const hasLinks =
@@ -79,7 +82,8 @@ function ProjectCard({
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1], delay: (index % 4) * 0.07 }}
       whileHover={{ scale: 1.015 }}
-      className={`group relative flex flex-col overflow-hidden rounded-2xl border border-white/5 bg-obsidian-800 transition-shadow duration-500 cursor-default ${
+      onClick={onClick}
+      className={`group relative flex flex-col overflow-hidden rounded-2xl border border-white/5 bg-obsidian-800 transition-shadow duration-500 cursor-pointer ${
         featured ? "md:col-span-2 min-h-[380px]" : "min-h-[340px]"
       }`}
       style={{
@@ -234,6 +238,7 @@ function FilterTab({
 /* ─── main section ─── */
 export default function PortfolioSection() {
   const [activeCategory, setActiveCategory] = useState<string>("all");
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   const filtered =
     activeCategory === "all"
@@ -304,11 +309,23 @@ export default function PortfolioSection() {
                 project={project}
                 featured={isFeatured(idx)}
                 index={idx}
+                onClick={() => setSelectedProject(project)}
               />
             ))}
           </motion.div>
         </AnimatePresence>
       </div>
+
+      {/* Render project details modal */}
+      <AnimatePresence>
+        {selectedProject && (
+          <ProjectModal
+            project={selectedProject}
+            isOpen={selectedProject !== null}
+            onClose={() => setSelectedProject(null)}
+          />
+        )}
+      </AnimatePresence>
     </section>
   );
 }
