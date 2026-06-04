@@ -22,25 +22,25 @@ const fadeUpVariant = {
 
 const mockups = [
   {
-    src: "/projects/Beyond body/screen-1.png",
+    src: "/projects/Beyond body/5f2a22ff-dec6-4597-8ed8-fe4764c4f4f2.jpg",
     alt: "Beyond Body app screenshot",
     className: "absolute top-[5%] left-[5%] w-[45%] animate-float rotate-[-3deg]",
     delay: 0.3,
   },
   {
-    src: "/projects/HealthBlocks/screen-1.png",
+    src: "/projects/HealthBlocks/IMG_4814.jpg",
     alt: "HealthBlocks app screenshot",
     className: "absolute top-[0%] right-[5%] w-[42%] animate-float-delay-1 rotate-[2deg]",
     delay: 0.45,
   },
   {
-    src: "/projects/near circle/screen-1.png",
+    src: "/projects/near circle/IMG_4841.JPG",
     alt: "Near Circle app screenshot",
     className: "absolute bottom-[10%] left-[8%] w-[40%] animate-float-delay-2 rotate-[3deg]",
     delay: 0.6,
   },
   {
-    src: "/projects/hoyzee/screen-1.png",
+    src: "/projects/hoyzee/IMG_4822.jpg",
     alt: "Hoyzee app screenshot",
     className: "absolute bottom-[5%] right-[10%] w-[43%] animate-float-delay-3 rotate-[-2deg]",
     delay: 0.75,
