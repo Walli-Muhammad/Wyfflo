@@ -8,7 +8,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-[#030303] text-gray-400 pt-20 pb-10 px-6 md:px-12 border-t border-white/5">
+    <footer className="bg-[#0A0A0A] text-gray-400 pt-20 pb-10 px-6 md:px-12 border-t border-white/10">
       <div className="max-w-screen-xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-8 mb-16">
           
@@ -16,14 +16,14 @@ export default function Footer() {
           <div className="lg:col-span-2 pr-0 lg:pr-12">
             <div className="text-3xl font-bold font-monumental tracking-tighter flex items-center mb-6">
               <span className="text-white">WYFF</span>
-              <span className="text-accent-glow glow-text">LO.</span>
+              <span className="text-[#7C3AED]">LO.</span>
             </div>
             <p className="text-sm leading-relaxed mb-8 max-w-sm">
               Ready to transform your brand's digital presence? Our expert team is here to help you achieve monumental results.
             </p>
             <a 
               href="#contact" 
-              className="inline-block bg-rose-600 hover:bg-rose-500 text-white text-sm font-bold tracking-wide rounded-full px-8 py-3.5 transition-colors duration-300 shadow-[0_0_20px_rgba(225,29,72,0.3)]"
+              className="inline-block bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-sm font-bold tracking-wide rounded-full px-8 py-3.5 transition-colors duration-300"
             >
               Book a Free Call
             </a>
@@ -53,14 +53,14 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Contact & Social Combined for responsiveness, but separated in design */}
+          {/* Contact */}
           <div className="flex flex-col gap-10">
             <div>
               <h4 className="text-white font-bold text-lg mb-6">Contact</h4>
               <div className="flex flex-col gap-4 text-sm">
                 <div>
                   <p className="text-white font-semibold mb-1">Our Email</p>
-                  <a href="mailto:sales@wyfflo.com" className="hover:text-accent-glow underline underline-offset-4 decoration-white/20 transition-colors duration-200">
+                  <a href="mailto:sales@wyfflo.com" className="hover:text-[#7C3AED] underline underline-offset-4 decoration-white/20 transition-colors duration-200">
                     sales@wyfflo.com
                   </a>
                 </div>
@@ -91,7 +91,7 @@ export default function Footer() {
           <p>© {new Date().getFullYear()} Wyfflo Agency. All rights reserved.</p>
           <button 
             onClick={scrollToTop}
-            className="text-white font-semibold hover:text-accent-glow transition-colors duration-200 flex items-center gap-2"
+            className="text-white font-semibold hover:text-[#7C3AED] transition-colors duration-200 flex items-center gap-2"
           >
             Back to the top <span>↑</span>
           </button>

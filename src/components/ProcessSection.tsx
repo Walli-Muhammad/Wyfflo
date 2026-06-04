@@ -38,7 +38,7 @@ function DiscoverVisual() {
       {[...Array(8)].map((_, i) => (
         <motion.div
           key={i}
-          className="absolute w-3 h-3 rounded-full bg-[#00f5ff]/40"
+          className="absolute w-3 h-3 rounded-full bg-[#7C3AED]/40"
           style={{
             top: `${20 + Math.sin(i * 0.8) * 30}%`,
             left: `${15 + Math.cos(i * 0.6) * 35}%`,
@@ -61,7 +61,7 @@ function DiscoverVisual() {
           y1="30%"
           x2="50%"
           y2="25%"
-          className="stroke-[#00f5ff]/20"
+          className="stroke-[#7C3AED]/20"
           strokeWidth="1"
         />
         <line
@@ -69,7 +69,7 @@ function DiscoverVisual() {
           y1="25%"
           x2="70%"
           y2="45%"
-          className="stroke-[#00f5ff]/20"
+          className="stroke-[#7C3AED]/20"
           strokeWidth="1"
         />
         <line
@@ -77,7 +77,7 @@ function DiscoverVisual() {
           y1="55%"
           x2="60%"
           y2="60%"
-          className="stroke-[#00f5ff]/20"
+          className="stroke-[#7C3AED]/20"
           strokeWidth="1"
         />
         <line
@@ -85,7 +85,7 @@ function DiscoverVisual() {
           y1="60%"
           x2="75%"
           y2="40%"
-          className="stroke-[#00f5ff]/20"
+          className="stroke-[#7C3AED]/20"
           strokeWidth="1"
         />
       </svg>
@@ -107,7 +107,7 @@ function ArchitectVisual() {
           {[...Array(3)].map((_, col) => (
             <div
               key={col}
-              className="w-20 h-14 md:w-24 md:h-16 rounded-lg border border-[#00f5ff]/20 bg-[#00f5ff]/5"
+              className="w-20 h-14 md:w-24 md:h-16 rounded-lg border border-[#7C3AED]/20 bg-[#7C3AED]/5"
             />
           ))}
         </motion.div>
@@ -135,7 +135,7 @@ function EngineerVisual() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: i * 0.4, duration: 0.3 }}
-          className="text-[#00f5ff]/70 mb-1"
+          className="text-[#7C3AED]/70 mb-1"
         >
           <span className="text-white/30">{">"} </span>
           {line}
@@ -151,7 +151,7 @@ function DeployVisual() {
       {[...Array(3)].map((_, i) => (
         <motion.div
           key={i}
-          className="absolute rounded-full border border-[#00f5ff]/30"
+          className="absolute rounded-full border border-[#7C3AED]/30"
           style={{
             width: `${(i + 1) * 100}px`,
             height: `${(i + 1) * 100}px`,
@@ -168,7 +168,7 @@ function DeployVisual() {
           }}
         />
       ))}
-      <div className="w-4 h-4 rounded-full bg-[#00f5ff] shadow-[0_0_20px_rgba(0,245,255,0.5)]" />
+      <div className="w-4 h-4 rounded-full bg-[#7C3AED] shadow-[0_0_20px_rgba(124,58,237,0.5)]" />
     </div>
   );
 }
@@ -248,18 +248,15 @@ export default function ProcessSection() {
     <section
       id="process"
       ref={sectionRef}
-      className="relative bg-obsidian-900 overflow-hidden"
+      className="relative overflow-hidden"
     >
-      {/* Top separator */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent-glow/20 to-transparent" />
-
       {/* ── Heading (scrolls normally) ── */}
       <div className="py-20 md:py-28 px-6 md:px-12 max-w-screen-xl mx-auto">
-        <span className="text-xs font-medium uppercase tracking-[0.25em] text-accent-glow">
+        <span className="text-xs font-medium uppercase tracking-[0.25em] text-[#7C3AED]">
           OUR PROCESS
         </span>
-        <h2 className="font-monumental text-[clamp(2.4rem,6vw,5rem)] font-bold leading-[1.05] tracking-tighter text-white mt-3">
-          How We <span className="text-accent-glow glow-text">Build.</span>
+        <h2 className="font-monumental text-[clamp(2.4rem,6vw,5rem)] font-bold leading-[1.05] tracking-tighter text-[#0A0A0A] mt-3">
+          How We <span className="text-[#7C3AED]">Build.</span>
         </h2>
       </div>
 
@@ -273,7 +270,7 @@ export default function ProcessSection() {
             {/* Left column — text */}
             <div className="relative flex flex-col justify-center">
               {/* Watermark number */}
-              <span className="absolute top-0 left-0 font-monumental text-[120px] md:text-[160px] font-bold text-white/[0.04] select-none leading-none">
+              <span className="absolute top-0 left-0 font-monumental text-[120px] md:text-[160px] font-bold text-[#0A0A0A]/[0.04] select-none leading-none">
                 {STEPS[activeStep].number}
               </span>
 
@@ -285,10 +282,10 @@ export default function ProcessSection() {
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.4, ease: "easeOut" }}
                 >
-                  <h3 className="font-monumental text-4xl md:text-5xl font-bold text-white tracking-tight">
+                  <h3 className="font-monumental text-4xl md:text-5xl font-bold text-[#0A0A0A] tracking-tight">
                     {STEPS[activeStep].title}
                   </h3>
-                  <p className="text-base md:text-lg text-white/60 leading-relaxed max-w-[480px] mt-4 font-sans">
+                  <p className="text-base md:text-lg text-[#6B7280] leading-relaxed max-w-[480px] mt-4 font-sans">
                     {STEPS[activeStep].description}
                   </p>
                 </motion.div>
@@ -318,16 +315,16 @@ export default function ProcessSection() {
               <div
                 key={i}
                 className={`w-2 h-2 rounded-full transition-colors duration-300 ${
-                  i === activeStep ? "bg-[#00f5ff]" : "bg-white/20"
+                  i === activeStep ? "bg-[#7C3AED]" : "bg-[#E5E7EB]"
                 }`}
               />
             ))}
           </div>
 
           {/* ── Progress bar ── */}
-          <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-white/5">
+          <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#E5E7EB]">
             <div
-              className="h-full bg-[#00f5ff] transition-all duration-100"
+              className="h-full bg-[#7C3AED] transition-all duration-100"
               style={{ width: `${progress * 100}%` }}
             />
           </div>
@@ -349,13 +346,13 @@ export default function ProcessSection() {
                 transition={{ duration: 0.6, ease: "easeOut" }}
               >
                 {/* Text */}
-                <span className="font-monumental text-[80px] font-bold text-white/[0.04] select-none leading-none block">
+                <span className="font-monumental text-[80px] font-bold text-[#0A0A0A]/[0.04] select-none leading-none block">
                   {step.number}
                 </span>
-                <h3 className="font-monumental text-3xl font-bold text-white tracking-tight mt-2">
+                <h3 className="font-monumental text-3xl font-bold text-[#0A0A0A] tracking-tight mt-2">
                   {step.title}
                 </h3>
-                <p className="text-base text-white/60 leading-relaxed max-w-[480px] mt-4 font-sans">
+                <p className="text-base text-[#6B7280] leading-relaxed max-w-[480px] mt-4 font-sans">
                   {step.description}
                 </p>
 

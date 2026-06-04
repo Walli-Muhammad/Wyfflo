@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 import {
   projects,
   categories,
@@ -10,249 +11,119 @@ import {
   type Project,
   type ProjectCategory,
 } from "@/data/projects";
-import ProjectModal from "@/components/ProjectModal";
 
-/* ─── project card ─── */
-function ProjectCard({
-  project,
-  index,
-  onClick,
-}: {
-  project: Project;
-  index: number;
-  onClick: () => void;
-}) {
-  const accent = CATEGORY_COLORS[project.category];
-  const isFeatured = index % 5 === 0;
-  const colSpan = isFeatured ? "md:col-span-2" : "md:col-span-1";
-  const minHeight = isFeatured ? "min-h-[420px]" : "min-h-[380px]";
-  const phoneWidth = isFeatured ? "w-[160px]" : "w-[130px]";
-
-  return (
-    <motion.div
-      layout
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{
-        duration: 0.55,
-        ease: [0.16, 1, 0.3, 1],
-        delay: (index % 4) * 0.07,
-      }}
-      whileHover={{ scale: 1.01 }}
-      onClick={onClick}
-      className={`group relative flex flex-col overflow-hidden rounded-2xl bg-[#0a0a0a] border cursor-pointer ${colSpan} ${minHeight}`}
-      style={{ borderColor: `${accent}33` }}
-    >
-      {/* hover glow overlay */}
-      <div
-        className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20"
-        style={{
-          boxShadow: `inset 0 0 0 1px ${accent}, 0 0 30px ${accent}40`,
-        }}
-      />
-
-      {/* header row */}
-      <div className="flex items-center gap-3 p-5 pb-2">
-        {/* app icon */}
-        <div className="relative w-[40px] h-[40px] rounded-xl overflow-hidden shrink-0 bg-[#0e0e10]">
-          <Image
-            src={project.images[0]}
-            alt={`${project.name} icon`}
-            fill
-            className="object-cover"
-            sizes="40px"
-            onError={(e) => {
-              (e.target as HTMLImageElement).style.opacity = "0";
-            }}
-          />
-        </div>
-
-        {/* app name */}
-        <span className="font-monumental text-base font-bold text-white truncate">
-          {project.name}
-        </span>
-
-        {/* category badge — pushed right */}
-        <span
-          className="ml-auto shrink-0 rounded-full border px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider"
-          style={{
-            borderColor: `${accent}50`,
-            color: accent,
-            background: `${accent}12`,
-          }}
-        >
-          {project.categoryLabel}
-        </span>
-      </div>
-
-      {/* tagline */}
-      <p
-        className="px-5 text-sm italic font-medium"
-        style={{ color: accent }}
-      >
-        {project.tagline}
-      </p>
-
-      {/* phone mockup */}
-      <div className="flex-1 flex items-center justify-center px-5 py-4">
-        <div className={`relative ${phoneWidth} shrink-0 select-none`}>
-          {/* phone shell */}
-          <div className="relative rounded-[28px] bg-[#111111] border-2 border-white/10 overflow-hidden shadow-xl aspect-[9/19.5]">
-            {/* dynamic island / notch */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-[10px] bg-[#0a0a0a] rounded-b-xl z-10" />
-
-            {/* fallback bg */}
-            <div className="absolute inset-0 bg-[#0e0e10] -z-10" />
-
-            {/* screen-1 (default, fades out on hover) */}
-            {project.images[1] && (
-              <Image
-                src={project.images[1]}
-                alt={`${project.name} screen 1`}
-                fill
-                className="object-cover transition-opacity duration-500 group-hover:opacity-0"
-                sizes="160px"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).style.opacity = "0";
-                }}
-              />
-            )}
-
-            {/* screen-2 (hidden, fades in on hover) */}
-            {project.images[2] && (
-              <Image
-                src={project.images[2]}
-                alt={`${project.name} screen 2`}
-                fill
-                className="object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                sizes="160px"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).style.opacity = "0";
-                }}
-              />
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* bottom accent line */}
-      <div
-        className="absolute bottom-0 left-0 h-[2px] w-0 group-hover:w-full transition-all duration-500"
-        style={{ backgroundColor: accent }}
-      />
-    </motion.div>
-  );
-}
-
-/* ─── filter tab ─── */
-function FilterTab({
-  label,
-  active,
-  onClick,
-}: {
-  label: string;
-  active: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={`relative rounded-full px-5 py-2 text-xs font-semibold uppercase tracking-widest transition-colors duration-300 ${
-        active
-          ? "text-black font-semibold"
-          : "bg-white/5 text-white/40 border border-white/10 hover:text-white/60 hover:bg-white/[0.08]"
-      }`}
-    >
-      {active && (
-        <motion.div
-          layoutId="activeFilterPill"
-          className="absolute inset-0 rounded-full bg-[#00f5ff] z-0"
-          transition={{ type: "spring", stiffness: 400, damping: 30 }}
-        />
-      )}
-      <span className="relative z-10">{label}</span>
-    </button>
-  );
-}
-
-/* ─── main section ─── */
 export default function PortfolioSection() {
-  const [activeCategory, setActiveCategory] = useState<string>("all");
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [activeFilter, setActiveFilter] = useState<string>("all");
+  const router = useRouter();
 
   const filtered =
-    activeCategory === "all"
+    activeFilter === "all"
       ? projects
-      : projects.filter((p) => p.category === activeCategory);
+      : projects.filter((p) => p.category === activeFilter);
 
   return (
-    <section id="work" className="relative py-28 md:py-40 px-6 md:px-12 bg-obsidian-900">
-      {/* top separator */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent-glow/20 to-transparent" />
-
+    <section id="work" className="py-28 md:py-40 px-6 md:px-12 bg-white">
       <div className="max-w-screen-xl mx-auto">
-        {/* heading */}
+        {/* Heading */}
         <div className="mb-12 md:mb-16">
-          <span className="text-xs font-medium uppercase tracking-[0.25em] text-accent-glow">
-            Featured Work
+          <span className="text-xs font-medium uppercase tracking-[0.25em] text-[#7C3AED]">
+            OUR WORK
           </span>
-          <h2 className="mt-4 font-monumental text-[clamp(2.4rem,6vw,5rem)] font-bold leading-[1.05] tracking-tighter text-white">
-            Monuments of
-            <br />
-            <span className="text-accent-glow glow-text">Code.</span>
+          <h2 className="mt-4 font-monumental text-[clamp(2.4rem,6vw,5rem)] font-bold leading-[1.05] tracking-tighter text-[#0A0A0A]">
+            Monuments of{" "}
+            <span className="text-[#7C3AED]">Code.</span>
           </h2>
-          <p className="mt-5 max-w-xl text-sm text-gray-400 leading-relaxed">
+          <p className="mt-5 max-w-xl text-sm text-[#6B7280] leading-relaxed">
             11 real products. Real users. Real impact. From gamified wellness
             companions to community-safety networks — here is what we have shipped.
           </p>
         </div>
 
-        {/* filter tabs — pill style */}
+        {/* Filter Tabs */}
         <div className="flex gap-2 flex-wrap mb-10">
           {categories.map((cat) => (
-            <FilterTab
+            <button
               key={cat.id}
-              label={cat.label}
-              active={activeCategory === cat.id}
-              onClick={() => setActiveCategory(cat.id)}
-            />
+              onClick={() => setActiveFilter(cat.id)}
+              className={`rounded-full px-5 py-2 text-xs font-semibold uppercase tracking-widest transition-all duration-300 border ${
+                activeFilter === cat.id
+                  ? "bg-[#7C3AED] text-white border-[#7C3AED]"
+                  : "bg-[#F5F5F7] text-[#6B7280] border-[#E5E7EB] hover:text-[#0A0A0A]"
+              }`}
+            >
+              {cat.label}
+            </button>
           ))}
         </div>
 
-        {/* grid with AnimatePresence for filter transitions */}
-        <AnimatePresence mode="popLayout">
+        {/* Project Grid */}
+        <AnimatePresence mode="wait">
           <motion.div
-            key={activeCategory}
-            layout
+            key={activeFilter}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
           >
             {filtered.map((project, idx) => (
-              <ProjectCard
+              <motion.div
                 key={project.id}
-                project={project}
-                index={idx}
-                onClick={() => setSelectedProject(project)}
-              />
+                layout
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{
+                  duration: 0.55,
+                  ease: [0.16, 1, 0.3, 1],
+                  delay: (idx % 4) * 0.07,
+                }}
+                whileHover={{ y: -2 }}
+                onClick={() => router.push("/work/" + project.id)}
+                className="group cursor-pointer rounded-2xl border border-[#E5E7EB] bg-white overflow-hidden shadow-sm transition-all duration-300 hover:shadow-md hover:border-[#7C3AED] hover:-translate-y-0.5"
+              >
+                {/* Top Image Area */}
+                <div className="relative aspect-video bg-[#F5F5F7]">
+                  <Image
+                    src={project.images[1]}
+                    alt={project.name}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+                </div>
+
+                {/* Bottom Content */}
+                <div className="p-5">
+                  <div className="flex items-center gap-3 mb-2">
+                    {/* Icon */}
+                    <div className="relative w-8 h-8 rounded-xl overflow-hidden border border-[#E5E7EB] flex-shrink-0">
+                      <Image
+                        src={project.images[0]}
+                        alt=""
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                    {/* Name */}
+                    <span className="font-monumental text-base font-semibold text-[#0A0A0A]">
+                      {project.name}
+                    </span>
+                    {/* Badge */}
+                    <span className="ml-auto rounded-full bg-[#EDE9FE] text-[#7C3AED] px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider">
+                      {project.categoryLabel}
+                    </span>
+                  </div>
+                  {/* Tagline */}
+                  <p className="text-sm text-[#6B7280] line-clamp-1">
+                    {project.tagline}
+                  </p>
+                </div>
+              </motion.div>
             ))}
           </motion.div>
         </AnimatePresence>
       </div>
-
-      {/* Render project details modal */}
-      <AnimatePresence>
-        {selectedProject && (
-          <ProjectModal
-            project={selectedProject}
-            isOpen={selectedProject !== null}
-            onClose={() => setSelectedProject(null)}
-          />
-        )}
-      </AnimatePresence>
     </section>
   );
 }

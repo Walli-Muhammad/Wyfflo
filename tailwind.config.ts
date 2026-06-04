@@ -10,17 +10,13 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        obsidian: {
-          900: '#0a0a0c', // Deepest obsidian background
-          800: '#121214',
-          700: '#1a1a1d',
-        },
-        slate: {
-          border: '#2a2a2e', // Subtle slate border
-        },
         accent: {
-          glow: '#00f0ff', // Fluid glowing tech accent (cyan/blue glow)
-        }
+          DEFAULT: '#7C3AED',
+          hover: '#6D28D9',
+          light: '#EDE9FE',
+        },
+        border: '#E5E7EB',
+        surface: '#F5F5F7',
       },
       fontFamily: {
         sans: ['var(--font-outfit)', 'sans-serif'],

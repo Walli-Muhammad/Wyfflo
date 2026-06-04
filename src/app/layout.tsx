@@ -18,8 +18,8 @@ const syne = Syne({
 });
 
 export const metadata: Metadata = {
-  title: "Wyfflo | Digital Antiquity",
-  description: "High-end portfolio for Wyfflo development agency.",
+  title: "Wyfflo | Digital Agency",
+  description: "We build apps people love — mobile apps, AI products, and enterprise platforms.",
 };
 
 export default function RootLayout({
@@ -29,37 +29,42 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${outfit.variable} ${syne.variable}`}>
-      <body className="font-sans bg-obsidian-900 text-white min-h-screen flex flex-col relative selection:bg-accent-glow selection:text-obsidian-900">
+      <body className="font-sans bg-white text-[#0A0A0A] min-h-screen flex flex-col relative selection:bg-[#EDE9FE] selection:text-[#7C3AED]">
         
         {/* Fixed, glassmorphism top navigation bar */}
-        <header className="fixed top-0 left-0 right-0 z-50 glass-nav h-24 flex items-center px-6 md:px-12 transition-all duration-300">
+        <header className="fixed top-0 left-0 right-0 z-50 glass-nav h-20 flex items-center px-6 md:px-12 transition-all duration-300">
           <div className="max-w-screen-2xl mx-auto w-full flex justify-between items-center">
             
             {/* Logo */}
-            <div className="text-3xl font-bold font-monumental tracking-tighter flex items-center cursor-pointer">
-              <span className="text-white">WYFF</span>
-              <span className="text-accent-glow glow-text">LO.</span>
-            </div>
+            <a href="/" className="text-3xl font-bold font-monumental tracking-tighter flex items-center">
+              <span className="text-[#0A0A0A]">WYFF</span>
+              <span className="text-[#7C3AED]">LO.</span>
+            </a>
             
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex gap-10 text-xs uppercase tracking-[0.2em] font-medium text-gray-400">
-              <a href="#work" className="hover:text-accent-glow transition-colors duration-300">Work</a>
-              <a href="#expertise" className="hover:text-accent-glow transition-colors duration-300">Expertise</a>
-              <a href="#agency" className="hover:text-accent-glow transition-colors duration-300">Agency</a>
-              <a href="#contact" className="hover:text-accent-glow transition-colors duration-300">Contact</a>
+            <nav className="hidden md:flex gap-10 text-xs uppercase tracking-[0.2em] font-medium text-[#6B7280]">
+              <a href="#work" className="hover:text-[#7C3AED] transition-colors duration-300">Work</a>
+              <a href="#expertise" className="hover:text-[#7C3AED] transition-colors duration-300">Expertise</a>
+              <a href="#process" className="hover:text-[#7C3AED] transition-colors duration-300">Process</a>
+              <a href="#contact" className="hover:text-[#7C3AED] transition-colors duration-300">Contact</a>
             </nav>
+
+            {/* CTA Button */}
+            <a href="#contact" className="hidden md:inline-flex items-center gap-2 rounded-full bg-[#7C3AED] px-6 py-2.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-[#6D28D9] hover:shadow-lg">
+              Start a Project
+            </a>
             
-            {/* Mobile Menu Button (Placeholder for interaction) */}
+            {/* Mobile Menu Button */}
             <button className="md:hidden flex flex-col gap-1.5 p-2">
-              <span className="block w-6 h-0.5 bg-white"></span>
-              <span className="block w-4 h-0.5 bg-white ml-auto"></span>
+              <span className="block w-6 h-0.5 bg-[#0A0A0A]"></span>
+              <span className="block w-4 h-0.5 bg-[#0A0A0A] ml-auto"></span>
             </button>
             
           </div>
         </header>
 
         {/* Main Content */}
-        <main className="flex-grow">
+        <main className="flex-grow pt-20">
           {children}
         </main>
 

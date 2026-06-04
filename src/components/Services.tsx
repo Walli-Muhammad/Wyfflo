@@ -1,8 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SERVICES, type Service } from "@/lib/data";
 
 // Service icon map using SVG paths
@@ -32,33 +30,30 @@ const ICON_SVG: Record<string, React.ReactNode> = {
 function ServiceCard({ service, index }: { service: Service; index: number }) {
   return (
     <div
-      className={`service-card group relative flex flex-col gap-5 rounded-2xl border border-white/5 bg-obsidian-800 p-8 md:p-10 transition-colors duration-500 hover:border-accent-glow/20 service-card-${index}`}
+      className={`service-card group relative flex flex-col gap-5 rounded-2xl border border-[#E5E7EB] bg-white p-8 md:p-10 transition-all duration-300 hover:shadow-md hover:border-[#7C3AED] service-card-${index}`}
     >
-      {/* Glow on hover */}
-      <div className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100 glow-box" />
-
       {/* Icon */}
-      <div className="flex h-14 w-14 items-center justify-center rounded-xl border border-accent-glow/20 bg-accent-glow/5 text-accent-glow">
+      <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-[#EDE9FE] text-[#7C3AED]">
         {ICON_SVG[service.icon]}
       </div>
 
       {/* Index number */}
-      <span className="absolute right-8 top-8 font-monumental text-5xl font-bold text-white/[0.04] select-none">
+      <span className="absolute right-8 top-8 font-monumental text-5xl font-bold text-[#0A0A0A]/[0.04] select-none">
         {String(index + 1).padStart(2, "0")}
       </span>
 
       {/* Content */}
       <div className="flex flex-col gap-3 mt-2">
-        <h3 className="font-monumental text-xl font-bold tracking-tight text-white">
+        <h3 className="font-monumental text-xl font-bold tracking-tight text-[#0A0A0A]">
           {service.title}
         </h3>
-        <p className="text-sm text-gray-400 leading-relaxed">
+        <p className="text-sm text-[#6B7280] leading-relaxed">
           {service.description}
         </p>
       </div>
 
       {/* Arrow */}
-      <div className="mt-auto pt-4 flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-gray-600 transition-colors duration-300 group-hover:text-accent-glow">
+      <div className="mt-auto pt-4 flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[#6B7280] transition-colors duration-300 group-hover:text-[#7C3AED]">
         <span>Learn More</span>
         <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
       </div>
@@ -72,74 +67,90 @@ export default function Services() {
   const cardsWrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
+    let ctx: any;
+    let isCancelled = false;
 
-    const ctx = gsap.context(() => {
-      // Cards: animate each from bottom sequentially as user scrolls
-      const cards = gsap.utils.toArray<HTMLElement>(".service-card");
-      gsap.set(cards, { opacity: 0, y: 60 });
+    const initGSAP = async () => {
+      try {
+        const { default: gsap } = await import("gsap");
+        const { ScrollTrigger } = await import("gsap/ScrollTrigger");
 
-      cards.forEach((card, i) => {
-        gsap.to(card, {
-          opacity: 1,
-          y: 0,
-          duration: 0.7,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: card,
-            start: "top 85%",
-            toggleActions: "play none none reverse",
-          },
-          delay: i * 0.08, // slightly staggered
-        });
-      });
+        if (isCancelled) return;
 
-      // Headline fade-up
-      if (headlineRef.current) {
-        gsap.fromTo(
-          headlineRef.current,
-          { opacity: 0, y: 40 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.9,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: headlineRef.current,
-              start: "top 85%",
-              toggleActions: "play none none reverse",
-            },
+        gsap.registerPlugin(ScrollTrigger);
+
+        ctx = gsap.context(() => {
+          // Cards: animate each from bottom sequentially as user scrolls
+          const cards = gsap.utils.toArray<HTMLElement>(".service-card");
+          gsap.set(cards, { opacity: 0, y: 60 });
+
+          cards.forEach((card, i) => {
+            gsap.to(card, {
+              opacity: 1,
+              y: 0,
+              duration: 0.7,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: card,
+                start: "top 85%",
+                toggleActions: "play none none reverse",
+              },
+              delay: i * 0.08, // slightly staggered
+            });
+          });
+
+          // Headline fade-up
+          if (headlineRef.current) {
+            gsap.fromTo(
+              headlineRef.current,
+              { opacity: 0, y: 40 },
+              {
+                opacity: 1,
+                y: 0,
+                duration: 0.9,
+                ease: "power3.out",
+                scrollTrigger: {
+                  trigger: headlineRef.current,
+                  start: "top 85%",
+                  toggleActions: "play none none reverse",
+                },
+              }
+            );
           }
-        );
+        }, sectionRef);
+      } catch (error) {
+        console.error("GSAP ScrollTrigger initialization failed:", error);
       }
-    }, sectionRef);
+    };
 
-    return () => ctx.revert();
+    initGSAP();
+
+    return () => {
+      isCancelled = true;
+      if (ctx) ctx.revert();
+    };
   }, []);
 
   return (
     <section
       ref={sectionRef}
       id="expertise"
-      className="relative py-28 md:py-40 px-6 md:px-12 bg-obsidian-900 overflow-hidden"
+      className="py-28 md:py-40 px-6 md:px-12 bg-[#F5F5F7] overflow-hidden"
     >
-      {/* Subtle top separator line */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent-glow/20 to-transparent" />
-
       <div className="max-w-screen-xl mx-auto">
         {/* Section headline */}
         <div ref={headlineRef} className="mb-16 md:mb-20 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
           <div className="flex flex-col gap-4">
-            <span className="text-xs font-medium uppercase tracking-[0.25em] text-accent-glow">
+            <span className="text-xs font-medium uppercase tracking-[0.25em] text-[#7C3AED]">
               Our Expertise
             </span>
-            <h2 className="font-monumental text-[clamp(2.4rem,6vw,5rem)] font-bold leading-[1.05] tracking-tighter text-white">
+            <h2 className="font-monumental text-[clamp(2.4rem,6vw,5rem)] font-bold leading-[1.05] tracking-tighter text-[#0A0A0A]">
               What We<br />
-              <span className="text-accent-glow glow-text">Master.</span>
+              <span className="text-[#7C3AED]">Master.</span>
             </h2>
           </div>
 
-          <p className="max-w-sm text-sm text-gray-400 leading-relaxed md:text-right">
+          <p className="max-w-sm text-sm text-[#6B7280] leading-relaxed md:text-right">
             Four pillars of technical excellence — each a focused discipline,
             together forming a complete digital capability.
           </p>
