@@ -28,7 +28,7 @@ const mockups = [
     delay: 0.3,
   },
   {
-    src: "/projects/HealthBlocks/IMG_4814.jpg",
+    src: "/projects/healthblocks/IMG_4814.jpg",
     alt: "HealthBlocks app screenshot",
     className: "absolute top-[0%] right-[5%] w-[42%] animate-float-delay-1 rotate-[2deg]",
     delay: 0.45,

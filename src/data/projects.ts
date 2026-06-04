@@ -96,11 +96,11 @@ export const projects: Project[] = [
     description:
       'A digital health platform that makes healthy living engaging rather than obligatory. Connects with wearables to sync activity data, layers community challenges on top, and delivers personalized wellness insights — all with user privacy kept firmly in focus. A complete ecosystem for building habits that stick beyond the initial burst of enthusiasm.',
     images: [
-      '/projects/HealthBlocks/icon.png',
-      '/projects/HealthBlocks/IMG_4814.jpg',
-      '/projects/HealthBlocks/IMG_4815.jpg',
-      '/projects/HealthBlocks/IMG_4816.jpg',
-      '/projects/HealthBlocks/IMG_4817.jpg',
+      '/projects/healthblocks/icon.png',
+      '/projects/healthblocks/IMG_4814.jpg',
+      '/projects/healthblocks/IMG_4815.jpg',
+      '/projects/healthblocks/IMG_4816.jpg',
+      '/projects/healthblocks/IMG_4817.jpg',
     ],
     links: { playstore: 'https://play.google.com/store/apps/details?id=com.app.healthblocks', appstore: 'https://apps.apple.com/nl/app/healthblocks-all-about-health/id6502659174', website: 'https://www.healthblocks.ai' },
     tags: ['Wearables', 'Community', 'Wellness', 'Android', 'iOS'],

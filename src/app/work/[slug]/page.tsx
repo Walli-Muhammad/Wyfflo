@@ -176,12 +176,10 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
               <p className="text-[#6B7280] leading-relaxed text-base">{project.description}</p>
             </div>
 
-            {/* Right: Phone Mockup */}
-            <div className="flex justify-center">
-              <div className="bg-[#0A0A0A] rounded-[2.5rem] p-2 max-w-[220px] mx-auto">
-                <div className="rounded-[2rem] overflow-hidden aspect-[9/19.5] relative bg-black">
-                  <Image src={project.images[2]} alt="" fill className="object-cover" sizes="220px" />
-                </div>
+            {/* Right: Large Floating Screenshot */}
+            <div className="flex justify-center items-center">
+              <div className="w-full max-w-[300px] aspect-[9/16] rounded-3xl border border-[#E5E7EB] bg-white shadow-2xl relative overflow-hidden animate-float">
+                <Image src={project.images[2]} alt={`${project.name} feature screenshot`} fill className="object-cover" sizes="300px" />
               </div>
             </div>
           </div>
@@ -227,14 +225,31 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
       <section className="bg-white">
         <div className="py-16 px-6 md:px-12 max-w-screen-xl mx-auto">
           <h2 className="font-monumental text-2xl font-bold text-[#0A0A0A] mb-8">Visual Highlights</h2>
-          <div className="flex gap-6 overflow-x-auto pb-4">
-            {project.images.slice(1, 5).map((img, i) => (
-              <div key={i} className="flex-shrink-0 bg-[#0A0A0A] rounded-[2.5rem] p-2 w-[180px]">
-                <div className="rounded-[2rem] overflow-hidden aspect-[9/19.5] relative bg-black">
-                  <Image src={img} alt="" fill className="object-cover" sizes="180px" />
+          <div className="flex gap-6 overflow-x-auto pb-8 pt-4">
+            {project.images.slice(1, 5).map((img, i) => {
+              const anims = [
+                "animate-float",
+                "animate-float-delay-1",
+                "animate-float-delay-2",
+                "animate-float-delay-3"
+              ];
+              const animClass = anims[i % anims.length];
+
+              return (
+                <div
+                  key={i}
+                  className={`flex-shrink-0 w-[240px] md:w-[280px] aspect-[9/16] rounded-3xl border border-[#E5E7EB] bg-white shadow-lg relative overflow-hidden transition-all duration-500 hover:shadow-2xl hover:border-[#7C3AED]/40 hover:-translate-y-2 group ${animClass}`}
+                >
+                  <Image
+                    src={img}
+                    alt={`${project.name} screen ${i + 1}`}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                    sizes="(max-width: 768px) 240px, 280px"
+                  />
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
