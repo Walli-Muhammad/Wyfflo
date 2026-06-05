@@ -3,7 +3,6 @@ import { Outfit, Syne } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/Footer";
 import FloatingContacts from "@/components/FloatingContacts";
-import Image from "next/image";
 
 // Configure ultra-modern, monumental sans-serif fonts
 const outfit = Outfit({ 
@@ -37,20 +36,9 @@ export default function RootLayout({
           <div className="max-w-screen-2xl mx-auto w-full flex justify-between items-center">
             
             {/* Logo */}
-            <a href="/" className="flex items-center gap-3">
-              <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-[#E5E7EB] shrink-0 bg-white">
-                <Image
-                  src="/logo/logo.jpeg"
-                  alt="Wyfflo Logo"
-                  fill
-                  className="object-cover"
-                  priority
-                />
-              </div>
-              <span className="text-2xl font-bold font-monumental tracking-tighter flex items-center">
-                <span className="text-[#0A0A0A]">WYFF</span>
-                <span className="text-[#7C3AED]">LO.</span>
-              </span>
+            <a href="/" className="text-3xl font-bold font-monumental tracking-tighter flex items-center">
+              <span className="text-[#0A0A0A]">WYFF</span>
+              <span className="text-[#7C3AED]">LO.</span>
             </a>
             
             {/* Desktop Navigation */}
