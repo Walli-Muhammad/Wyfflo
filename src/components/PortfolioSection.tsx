@@ -151,7 +151,7 @@ export default function PortfolioSection() {
                     <h3 
                       className="font-monumental text-lg md:text-xl font-bold tracking-tight text-white leading-tight"
                       style={{ 
-                        textShadow: "-1.5px -1.5px 0 #000, 1.5px -1.5px 0 #000, -1.5px 1.5px 0 #000, 1.5px 1.5px 0 #000, 0 2px 4px rgba(0,0,0,0.8)" 
+                        textShadow: "0 2px 8px rgba(0, 0, 0, 0.6), 0 1px 3px rgba(0, 0, 0, 0.8)" 
                       }}
                     >
                       {project.name}
