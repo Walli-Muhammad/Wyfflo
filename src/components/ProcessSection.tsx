@@ -38,14 +38,14 @@ function DiscoverVisual() {
       {[...Array(8)].map((_, i) => (
         <motion.div
           key={i}
-          className="absolute w-3 h-3 rounded-full bg-[#7C3AED]/40"
+          className="absolute w-3 h-3 rounded-full bg-[#7C3AED]/60"
           style={{
             top: `${20 + Math.sin(i * 0.8) * 30}%`,
             left: `${15 + Math.cos(i * 0.6) * 35}%`,
           }}
           animate={{
             scale: [1, 1.5, 1],
-            opacity: [0.3, 0.7, 0.3],
+            opacity: [0.4, 0.8, 0.4],
           }}
           transition={{
             duration: 2 + i * 0.3,
@@ -61,32 +61,32 @@ function DiscoverVisual() {
           y1="30%"
           x2="50%"
           y2="25%"
-          className="stroke-[#7C3AED]/20"
-          strokeWidth="1"
+          className="stroke-[#7C3AED]/40"
+          strokeWidth="1.5"
         />
         <line
           x1="50%"
           y1="25%"
           x2="70%"
           y2="45%"
-          className="stroke-[#7C3AED]/20"
-          strokeWidth="1"
+          className="stroke-[#7C3AED]/40"
+          strokeWidth="1.5"
         />
         <line
           x1="30%"
           y1="55%"
           x2="60%"
           y2="60%"
-          className="stroke-[#7C3AED]/20"
-          strokeWidth="1"
+          className="stroke-[#7C3AED]/40"
+          strokeWidth="1.5"
         />
         <line
           x1="60%"
           y1="60%"
           x2="75%"
           y2="40%"
-          className="stroke-[#7C3AED]/20"
-          strokeWidth="1"
+          className="stroke-[#7C3AED]/40"
+          strokeWidth="1.5"
         />
       </svg>
     </div>
@@ -107,7 +107,7 @@ function ArchitectVisual() {
           {[...Array(3)].map((_, col) => (
             <div
               key={col}
-              className="w-20 h-14 md:w-24 md:h-16 rounded-lg border border-[#7C3AED]/20 bg-[#7C3AED]/5"
+              className="w-20 h-14 md:w-24 md:h-16 rounded-lg border-2 border-[#7C3AED]/50 bg-[#7C3AED]/10"
             />
           ))}
         </motion.div>
@@ -151,14 +151,14 @@ function DeployVisual() {
       {[...Array(3)].map((_, i) => (
         <motion.div
           key={i}
-          className="absolute rounded-full border border-[#7C3AED]/30"
+          className="absolute rounded-full border-2 border-[#7C3AED]/50"
           style={{
             width: `${(i + 1) * 100}px`,
             height: `${(i + 1) * 100}px`,
           }}
           animate={{
             scale: [1, 1.3, 1],
-            opacity: [0.3, 0.1, 0.3],
+            opacity: [0.4, 0.2, 0.4],
           }}
           transition={{
             duration: 2,

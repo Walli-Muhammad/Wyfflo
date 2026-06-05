@@ -147,8 +147,13 @@ export default function PortfolioSection() {
                   </div>
 
                   {/* Bottom Text Information Card */}
-                  <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 via-black/40 to-transparent text-white z-10 flex flex-col justify-end">
-                    <h3 className="font-monumental text-lg md:text-xl font-bold tracking-tight text-white leading-tight">
+                  <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/95 via-black/50 to-transparent text-white z-10 flex flex-col justify-end">
+                    <h3 
+                      className="font-monumental text-lg md:text-xl font-bold tracking-tight text-white leading-tight"
+                      style={{ 
+                        textShadow: "-1.5px -1.5px 0 #000, 1.5px -1.5px 0 #000, -1.5px 1.5px 0 #000, 1.5px 1.5px 0 #000, 0 2px 4px rgba(0,0,0,0.8)" 
+                      }}
+                    >
                       {project.name}
                     </h3>
                     <div className="flex items-center justify-between mt-1 text-xs text-white/80">
