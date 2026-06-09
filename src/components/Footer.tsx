@@ -70,10 +70,14 @@ export default function Footer() {
                   <a href="tel:+447897021964" className="block hover:text-white transition-colors duration-200">+44 789 702 1964</a>
                 </div>
                 <div>
-                  <p className="text-white font-semibold mb-1">Our Address</p>
+                  <p className="text-white font-semibold mb-1">State of Formation</p>
+                  <p className="leading-relaxed text-gray-400 mb-3">
+                    NEW MEXICO
+                  </p>
+                  <p className="text-white font-semibold mb-1">Business Address</p>
                   <p className="leading-relaxed text-gray-400">
-                    131 Continental Dr, Suite 305,<br />
-                    Newark, Delaware, 19713
+                    15442 VENTURA BLVD., STE 201-1759,<br />
+                    SHERMAN OAKS, CALIFORNIA, 91403
                   </p>
                 </div>
               </div>
