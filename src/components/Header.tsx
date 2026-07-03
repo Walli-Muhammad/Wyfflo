@@ -10,7 +10,8 @@ export default function Header() {
   const closeMenu = () => setIsOpen(false);
 
   const navLinks = [
-    { label: "Work", href: "#work" },
+    { label: "Apps", href: "#work" },
+    { label: "Websites", href: "#websites" },
     { label: "Expertise", href: "#expertise" },
     { label: "Process", href: "#process" },
     { label: "Contact", href: "#contact" },

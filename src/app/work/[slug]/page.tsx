@@ -2,15 +2,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { projects } from "@/data/projects";
+import { websites } from "@/data/websites";
 
 /* ---------- Static Params & Metadata ---------- */
 
 export async function generateStaticParams() {
-  return projects.map((p) => ({ slug: p.id }));
+  const appSlugs = projects.map((p) => ({ slug: p.id }));
+  const webSlugs = websites.map((w) => ({ slug: w.id }));
+  return [...appSlugs, ...webSlugs];
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const project = projects.find((p) => p.id === params.slug);
+  const project = projects.find((p) => p.id === params.slug) || websites.find((w) => w.id === params.slug);
   return { title: project ? `${project.name} — Wyfflo` : "Project — Wyfflo" };
 }
 
@@ -56,29 +59,63 @@ function CheckIcon() {
 /* ---------- Page Component ---------- */
 
 export default function ProjectPage({ params }: { params: { slug: string } }) {
-  const project = projects.find((p) => p.id === params.slug);
-  if (!project) notFound();
+  const appProject = projects.find((p) => p.id === params.slug);
+  const webProject = websites.find((w) => w.id === params.slug);
 
-  /* Derive platform string */
-  const platform =
-    project.links.playstore && project.links.appstore
-      ? "Android & iOS"
-      : project.links.playstore
-        ? "Android"
-        : project.links.appstore
-          ? "iOS"
-          : "Web";
+  if (!appProject && !webProject) notFound();
 
-  /* Similar projects */
-  const sameCategory = projects.filter(
-    (p) => p.id !== project.id && p.category === project.category
-  );
-  let similar = sameCategory.slice(0, 3);
-  if (similar.length < 3) {
-    const others = projects.filter(
-      (p) => p.id !== project.id && !similar.some((s) => s.id === p.id)
+  const isWebsite = !!webProject;
+
+  // Normalized fields depending on project type
+  const name = isWebsite ? webProject.name : appProject!.name;
+  const tagline = isWebsite ? webProject.tagline : appProject!.tagline;
+  const categoryLabel = isWebsite ? webProject.categoryLabel : appProject!.categoryLabel;
+  const description = isWebsite ? webProject.description : appProject!.description;
+  const techStack = isWebsite ? webProject.techStack : appProject!.techStack;
+  const tags = isWebsite ? webProject.tags : appProject!.tags;
+  const timeline = isWebsite ? "4–6 months" : appProject!.timeline;
+  const region = isWebsite ? "Global" : appProject!.region;
+  const platform = isWebsite
+    ? "Web"
+    : appProject!.links.playstore && appProject!.links.appstore
+    ? "Android & iOS"
+    : appProject!.links.playstore
+    ? "Android"
+    : "iOS";
+
+  // Website features generator
+  const features = isWebsite
+    ? [
+        { title: "Responsive Layout", description: "Seamless navigation across all viewport sizes, from mobile screen to ultra-wide desktop." },
+        { title: "High Performance", description: "Engineered for speed, optimized assets, and rapid time-to-interactive." },
+        { title: "Modern Web Architecture", description: "Implements clean typography, smooth transitions, and premium user experience." }
+      ]
+    : appProject!.features;
+
+  // Similar projects retrieval
+  let similar: any[] = [];
+  if (isWebsite) {
+    const sameCategory = websites.filter(
+      (w) => w.id !== webProject.id && w.category === webProject.category
     );
-    similar = [...similar, ...others].slice(0, 3);
+    similar = sameCategory.slice(0, 3);
+    if (similar.length < 3) {
+      const others = websites.filter(
+        (w) => w.id !== webProject.id && !similar.some((s) => s.id === w.id)
+      );
+      similar = [...similar, ...others].slice(0, 3);
+    }
+  } else {
+    const sameCategory = projects.filter(
+      (p) => p.id !== appProject!.id && p.category === appProject!.category
+    );
+    similar = sameCategory.slice(0, 3);
+    if (similar.length < 3) {
+      const others = projects.filter(
+        (p) => p.id !== appProject!.id && !similar.some((s) => s.id === p.id)
+      );
+      similar = [...similar, ...others].slice(0, 3);
+    }
   }
 
   return (
@@ -86,33 +123,39 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
       {/* ===== 1. Header ===== */}
       <section className="bg-white">
         <div className="max-w-screen-xl mx-auto px-6 md:px-12 pt-12 pb-16">
-          <Link href="/#work" className="text-sm text-[#6B7280] hover:text-[#7C3AED] transition-colors">
+          <Link href={isWebsite ? "/#websites" : "/#work"} className="text-sm text-[#6B7280] hover:text-[#7C3AED] transition-colors">
             ← Back to Work
           </Link>
 
           <div className="flex flex-row gap-6 items-start mt-8">
-            {/* App Icon */}
-            <div className="w-16 h-16 rounded-2xl overflow-hidden border border-[#E5E7EB] shrink-0 relative">
-              <Image src={project.images[0]} alt={`${project.name} icon`} fill className="object-cover" sizes="64px" />
-            </div>
+            {/* Project Icon */}
+            {isWebsite ? (
+              <div className="w-16 h-16 rounded-2xl bg-[#EDE9FE] border border-[#E5E7EB] shrink-0 flex items-center justify-center font-monumental text-3xl font-black text-[#7C3AED] select-none">
+                {webProject.name.charAt(0)}
+              </div>
+            ) : (
+              <div className="w-16 h-16 rounded-2xl overflow-hidden border border-[#E5E7EB] shrink-0 relative bg-white">
+                <Image src={appProject!.images[0]} alt={`${appProject!.name} icon`} fill className="object-cover" sizes="64px" />
+              </div>
+            )}
 
             {/* Name / Tagline / Badge */}
             <div className="flex flex-col gap-1.5">
-              <h1 className="font-monumental text-[40px] leading-tight font-bold text-[#0A0A0A]">
-                {project.name}
+              <h1 className="font-monumental text-[32px] md:text-[40px] leading-tight font-bold text-[#0A0A0A]">
+                {name}
               </h1>
-              <p className="text-[#7C3AED] text-lg italic">{project.tagline}</p>
+              <p className="text-[#7C3AED] text-base md:text-lg italic">{tagline}</p>
               <span className="bg-[#EDE9FE] text-[#7C3AED] rounded-full px-3 py-1 text-xs font-semibold uppercase w-fit">
-                {project.categoryLabel}
+                {categoryLabel}
               </span>
             </div>
           </div>
 
-          {/* Store Buttons */}
+          {/* Buttons Row */}
           <div className="flex gap-3 mt-6 flex-wrap">
-            {project.links.playstore && (
+            {!isWebsite && appProject!.links.playstore && (
               <a
-                href={project.links.playstore}
+                href={appProject!.links.playstore}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 bg-[#7C3AED] text-white rounded-full px-5 py-2.5 text-sm font-semibold hover:bg-[#6D28D9] transition-colors"
@@ -121,9 +164,9 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                 Play Store
               </a>
             )}
-            {project.links.appstore && (
+            {!isWebsite && appProject!.links.appstore && (
               <a
-                href={project.links.appstore}
+                href={appProject!.links.appstore}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 bg-[#0A0A0A] text-white rounded-full px-5 py-2.5 text-sm font-semibold hover:bg-black transition-colors"
@@ -132,16 +175,28 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                 App Store
               </a>
             )}
-            {project.links.website && (
+            {isWebsite ? (
               <a
-                href={project.links.website}
+                href={webProject.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 border border-[#E5E7EB] text-[#0A0A0A] rounded-full px-5 py-2.5 text-sm font-semibold hover:bg-[#F5F5F7] transition-colors"
+                className="inline-flex items-center gap-2 bg-[#7C3AED] text-white rounded-full px-6 py-3 text-sm font-semibold hover:bg-[#6D28D9] transition-colors shadow-lg shadow-[#7C3AED]/20"
               >
                 <GlobeIcon />
-                Website
+                Visit Website
               </a>
+            ) : (
+              appProject!.links.website && (
+                <a
+                  href={appProject!.links.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 border border-[#E5E7EB] text-[#0A0A0A] rounded-full px-5 py-2.5 text-sm font-semibold hover:bg-[#F5F5F7] transition-colors"
+                >
+                  <GlobeIcon />
+                  Website
+                </a>
+              )
             )}
           </div>
         </div>
@@ -153,13 +208,13 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
               { label: "Platform", value: platform },
-              { label: "Category", value: project.categoryLabel },
-              { label: "Timeline", value: project.timeline },
-              { label: "Region", value: project.region },
+              { label: "Category", value: categoryLabel },
+              { label: "Timeline", value: timeline },
+              { label: "Region", value: region },
             ].map((stat) => (
               <div key={stat.label} className="bg-white rounded-xl p-5 border border-[#E5E7EB]">
                 <p className="text-xs uppercase tracking-wider text-[#6B7280] mb-1">{stat.label}</p>
-                <p className="font-monumental text-lg font-bold text-[#0A0A0A]">{stat.value}</p>
+                <p className="font-monumental text-base md:text-lg font-bold text-[#0A0A0A]">{stat.value}</p>
               </div>
             ))}
           </div>
@@ -169,18 +224,34 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
       {/* ===== 3. About ===== */}
       <section className="bg-white">
         <div className="py-16 px-6 md:px-12 max-w-screen-xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             {/* Left: Text */}
             <div>
-              <h2 className="font-monumental text-2xl font-bold text-[#0A0A0A] mb-6">About the App</h2>
-              <p className="text-[#6B7280] leading-relaxed text-base">{project.description}</p>
+              <h2 className="font-monumental text-2xl font-bold text-[#0A0A0A] mb-6">About the Project</h2>
+              <p className="text-[#6B7280] leading-relaxed text-base">{description}</p>
             </div>
 
-            {/* Right: Large Floating Screenshot */}
+            {/* Right: Large Mockup Container */}
             <div className="flex justify-center items-center">
-              <div className="w-full max-w-[300px] aspect-[9/16] rounded-3xl border border-[#E5E7EB] bg-white shadow-2xl relative overflow-hidden animate-float">
-                <Image src={project.images[2]} alt={`${project.name} feature screenshot`} fill className="object-cover" sizes="300px" />
-              </div>
+              {isWebsite ? (
+                /* Website Mockup Browser Window */
+                <div className="w-full max-w-[540px] aspect-video rounded-2xl border border-[#D1D5DB] bg-white shadow-2xl relative overflow-hidden flex flex-col animate-float">
+                  <div className="bg-[#E5E7EB] h-6 border-b border-[#D1D5DB] flex items-center px-3 gap-1.5 shrink-0 select-none">
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#EF4444]" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#F59E0B]" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#10B981]" />
+                    <div className="mx-auto w-1/3 h-3 bg-white/70 rounded-sm border border-[#E5E7EB]" />
+                  </div>
+                  <div className="relative w-full flex-grow">
+                    <Image src={webProject.image} alt={webProject.name} fill className="object-cover object-top" sizes="540px" />
+                  </div>
+                </div>
+              ) : (
+                /* Mobile Mockup Phone Frame */
+                <div className="w-full max-w-[300px] aspect-[9/16] rounded-3xl border border-[#E5E7EB] bg-white shadow-2xl relative overflow-hidden animate-float">
+                  <Image src={appProject!.images[2]} alt={`${appProject!.name} feature screenshot`} fill className="object-cover" sizes="300px" />
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -191,7 +262,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
         <div className="py-16 px-6 md:px-12 max-w-screen-xl mx-auto">
           <h2 className="font-monumental text-2xl font-bold text-[#0A0A0A] mb-8">Key Features</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {project.features.map((feature) => (
+            {features.map((feature) => (
               <div key={feature.title} className="bg-white rounded-xl p-6 border border-[#E5E7EB]">
                 <div className="w-10 h-10 rounded-lg bg-[#EDE9FE] flex items-center justify-center text-[#7C3AED] mb-4">
                   <CheckIcon />
@@ -209,7 +280,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
         <div className="py-16 px-6 md:px-12 max-w-screen-xl mx-auto">
           <h2 className="font-monumental text-2xl font-bold text-[#0A0A0A] mb-8">Technology Stack</h2>
           <div className="flex flex-wrap gap-3">
-            {project.techStack.map((tech) => (
+            {techStack.map((tech) => (
               <span
                 key={tech}
                 className="bg-[#F5F5F7] border border-[#E5E7EB] text-[#0A0A0A] rounded-full px-4 py-2 text-sm font-medium"
@@ -221,38 +292,40 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
         </div>
       </section>
 
-      {/* ===== 6. Visual Highlights ===== */}
-      <section className="bg-white">
-        <div className="py-16 px-6 md:px-12 max-w-screen-xl mx-auto">
-          <h2 className="font-monumental text-2xl font-bold text-[#0A0A0A] mb-8">Visual Highlights</h2>
-          <div className="flex gap-6 overflow-x-auto pb-8 pt-4">
-            {project.images.slice(1, 5).map((img, i) => {
-              const anims = [
-                "animate-float",
-                "animate-float-delay-1",
-                "animate-float-delay-2",
-                "animate-float-delay-3"
-              ];
-              const animClass = anims[i % anims.length];
+      {/* ===== 6. Visual Highlights (Only for Apps) ===== */}
+      {!isWebsite && (
+        <section className="bg-white">
+          <div className="py-16 px-6 md:px-12 max-w-screen-xl mx-auto">
+            <h2 className="font-monumental text-2xl font-bold text-[#0A0A0A] mb-8">Visual Highlights</h2>
+            <div className="flex gap-6 overflow-x-auto pb-8 pt-4">
+              {appProject!.images.slice(1, 5).map((img, i) => {
+                const anims = [
+                  "animate-float",
+                  "animate-float-delay-1",
+                  "animate-float-delay-2",
+                  "animate-float-delay-3"
+                ];
+                const animClass = anims[i % anims.length];
 
-              return (
-                <div
-                  key={i}
-                  className={`flex-shrink-0 w-[240px] md:w-[280px] aspect-[9/16] rounded-3xl border border-[#E5E7EB] bg-white shadow-lg relative overflow-hidden transition-all duration-500 hover:shadow-2xl hover:border-[#7C3AED]/40 hover:-translate-y-2 group ${animClass}`}
-                >
-                  <Image
-                    src={img}
-                    alt={`${project.name} screen ${i + 1}`}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-                    sizes="(max-width: 768px) 240px, 280px"
-                  />
-                </div>
-              );
-            })}
+                return (
+                  <div
+                    key={i}
+                    className={`flex-shrink-0 w-[240px] md:w-[280px] aspect-[9/16] rounded-3xl border border-[#E5E7EB] bg-white shadow-lg relative overflow-hidden transition-all duration-500 hover:shadow-2xl hover:border-[#7C3AED]/40 hover:-translate-y-2 group ${animClass}`}
+                  >
+                    <Image
+                      src={img}
+                      alt={`${appProject!.name} screen ${i + 1}`}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                      sizes="(max-width: 768px) 240px, 280px"
+                    />
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ===== 7. CTA Section ===== */}
       <section className="bg-[#7C3AED]">
@@ -275,30 +348,56 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
         <div className="py-16 px-6 md:px-12 max-w-screen-xl mx-auto">
           <h2 className="font-monumental text-2xl font-bold text-[#0A0A0A] mb-8">Similar Projects</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {similar.map((p) => (
-              <Link key={p.id} href={`/work/${p.id}`} className="group">
-                <div className="rounded-2xl border border-[#E5E7EB] shadow-sm overflow-hidden transition-shadow hover:shadow-md">
-                  {/* Image */}
-                  <div className="aspect-video relative bg-[#F5F5F7]">
-                    <Image src={p.images[1]} alt={p.name} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
-                  </div>
+            {similar.map((p) => {
+              const isSimWebsite = !('images' in p);
+              const simLink = `/work/${p.id}`;
+              const simImg = isSimWebsite ? (p as any).image : (p as any).images[1];
+              const simCategoryLabel = p.categoryLabel;
+              
+              return (
+                <Link key={p.id} href={simLink} className="group">
+                  <div className="rounded-2xl border border-[#E5E7EB] shadow-sm overflow-hidden transition-shadow hover:shadow-md h-full flex flex-col bg-white">
+                    {/* Image / Browser Mockup */}
+                    <div className="aspect-video relative bg-[#F5F5F7] overflow-hidden border-b border-[#E5E7EB]">
+                      {isSimWebsite ? (
+                        <div className="w-full h-full flex flex-col">
+                          <div className="bg-[#E5E7EB] h-4 border-b border-[#D1D5DB] flex items-center px-2 gap-1 shrink-0 select-none">
+                            <div className="w-1 h-1 rounded-full bg-[#EF4444]" />
+                            <div className="w-1 h-1 rounded-full bg-[#F59E0B]" />
+                            <div className="w-1 h-1 rounded-full bg-[#10B981]" />
+                          </div>
+                          <div className="relative w-full flex-grow">
+                            <Image src={simImg} alt={p.name} fill className="object-cover object-top" sizes="(max-width: 768px) 100vw, 33vw" />
+                          </div>
+                        </div>
+                      ) : (
+                        <Image src={simImg} alt={p.name} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
+                      )}
+                    </div>
 
-                  {/* Info */}
-                  <div className="p-5 flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-xl overflow-hidden border border-[#E5E7EB] shrink-0 relative">
-                      <Image src={p.images[0]} alt="" fill className="object-cover" sizes="40px" />
-                    </div>
-                    <div className="flex flex-col gap-1 min-w-0">
-                      <h3 className="font-monumental text-sm font-semibold text-[#0A0A0A] truncate">{p.name}</h3>
-                      <span className="bg-[#EDE9FE] text-[#7C3AED] rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase w-fit">
-                        {p.categoryLabel}
-                      </span>
-                      <p className="text-xs text-[#6B7280] truncate">{p.tagline}</p>
+                    {/* Info */}
+                    <div className="p-5 flex items-start gap-3 flex-grow">
+                      {isSimWebsite ? (
+                        <div className="w-10 h-10 rounded-xl bg-[#EDE9FE] border border-[#E5E7EB] shrink-0 flex items-center justify-center font-monumental text-base font-black text-[#7C3AED] select-none">
+                          {p.name.charAt(0)}
+                        </div>
+                      ) : (
+                        <div className="w-10 h-10 rounded-xl overflow-hidden border border-[#E5E7EB] shrink-0 relative">
+                          <Image src={(p as any).images[0]} alt="" fill className="object-cover" sizes="40px" />
+                        </div>
+                      )}
+                      <div className="flex flex-col gap-1 min-w-0">
+                        <h3 className="font-monumental text-sm font-semibold text-[#0A0A0A] truncate">{p.name}</h3>
+                        <span className="bg-[#EDE9FE] text-[#7C3AED] rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase w-fit">
+                          {simCategoryLabel}
+                        </span>
+                        <p className="text-xs text-[#6B7280] truncate">{p.tagline}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
