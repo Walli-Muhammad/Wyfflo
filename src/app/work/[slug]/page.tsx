@@ -129,11 +129,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
 
           <div className="flex flex-row gap-6 items-start mt-8">
             {/* Project Icon */}
-            {isWebsite ? (
-              <div className="w-16 h-16 rounded-2xl bg-[#EDE9FE] border border-[#E5E7EB] shrink-0 flex items-center justify-center font-monumental text-3xl font-black text-[#7C3AED] select-none">
-                {webProject.name.charAt(0)}
-              </div>
-            ) : (
+            {!isWebsite && (
               <div className="w-16 h-16 rounded-2xl overflow-hidden border border-[#E5E7EB] shrink-0 relative bg-white">
                 <Image src={appProject!.images[0]} alt={`${appProject!.name} icon`} fill className="object-cover" sizes="64px" />
               </div>
@@ -377,11 +373,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
 
                     {/* Info */}
                     <div className="p-5 flex items-start gap-3 flex-grow">
-                      {isSimWebsite ? (
-                        <div className="w-10 h-10 rounded-xl bg-[#EDE9FE] border border-[#E5E7EB] shrink-0 flex items-center justify-center font-monumental text-base font-black text-[#7C3AED] select-none">
-                          {p.name.charAt(0)}
-                        </div>
-                      ) : (
+                      {!isSimWebsite && (
                         <div className="w-10 h-10 rounded-xl overflow-hidden border border-[#E5E7EB] shrink-0 relative">
                           <Image src={(p as any).images[0]} alt="" fill className="object-cover" sizes="40px" />
                         </div>

@@ -150,12 +150,7 @@ export default function WebsitesSection() {
                     </div>
                   )}
 
-                  {/* Centered Initial Logo Badge (Simulates App Icon) */}
-                  <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
-                    <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-2xl border-2 border-white shadow-2xl bg-white flex items-center justify-center font-monumental text-2xl md:text-3xl font-black text-[#7C3AED] transition-all duration-500 group-hover:scale-110 group-hover:shadow-[0_10px_30px_rgba(124,58,237,0.3)]">
-                      {firstLetter}
-                    </div>
-                  </div>
+
 
                   {/* Bottom Text Information Card */}
                   <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/95 via-black/50 to-transparent text-white z-10 flex flex-col justify-end">
