@@ -60,8 +60,8 @@ export default function Footer() {
               <div className="flex flex-col gap-4 text-sm">
                 <div>
                   <p className="text-white font-semibold mb-1">Our Email</p>
-                  <a href="mailto:sales@wyfflo.com" className="hover:text-[#7C3AED] underline underline-offset-4 decoration-white/20 transition-colors duration-200">
-                    sales@wyfflo.com
+                  <a href="mailto:info@wyfflo.com" className="hover:text-[#7C3AED] underline underline-offset-4 decoration-white/20 transition-colors duration-200">
+                    info@wyfflo.com
                   </a>
                 </div>
                 <div>
