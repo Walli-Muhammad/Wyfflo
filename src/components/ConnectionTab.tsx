@@ -215,8 +215,8 @@ export default function ConnectionTab() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
                 </svg>
               </div>
-              <a href="mailto:admin@wyfflo.com" className="text-sm tracking-wider text-[#0A0A0A] hover:text-[#7C3AED] transition-colors">
-                admin@wyfflo.com
+              <a href="mailto:info@wyfflo.com" className="text-sm tracking-wider text-[#0A0A0A] hover:text-[#7C3AED] transition-colors">
+                info@wyfflo.com
               </a>
             </div>
             <div className="flex items-center gap-4">
@@ -226,7 +226,7 @@ export default function ConnectionTab() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                 </svg>
               </div>
-              <span className="text-sm tracking-wider text-[#0A0A0A]">San Francisco, CA</span>
+              <span className="text-sm tracking-wider text-[#0A0A0A]">New Mexico</span>
             </div>
           </div>
         </div>
