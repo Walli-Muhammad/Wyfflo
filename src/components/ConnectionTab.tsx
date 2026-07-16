@@ -11,7 +11,6 @@ const connectionSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
   email: z.string().email({ message: "Please enter a valid email address." }),
   projectType: z.string().min(1, { message: "Please select a project type." }),
-  budget: z.string().min(1, { message: "Please select an estimated budget." }),
 });
 
 type ConnectionFormValues = z.infer<typeof connectionSchema>;
@@ -31,7 +30,6 @@ export default function ConnectionTab() {
       name: "",
       email: "",
       projectType: "",
-      budget: "",
     },
   });
 
@@ -103,7 +101,7 @@ export default function ConnectionTab() {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
-                  className="flex flex-col items-center justify-center h-full min-h-[400px] text-center"
+                  className="flex flex-col items-center justify-center h-full min-h-[300px] text-center"
                 >
                   <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#EDE9FE] border border-[#7C3AED]/30 mb-6 text-[#7C3AED]">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-8 h-8">
@@ -164,7 +162,7 @@ export default function ConnectionTab() {
                   {/* Project Type Select */}
                   <div className="flex flex-col gap-2">
                     <label htmlFor="projectType" className="text-xs uppercase tracking-widest text-[#6B7280] font-medium">
-                      Project Type
+                      Product Type
                     </label>
                     <select
                       id="projectType"
@@ -176,33 +174,11 @@ export default function ConnectionTab() {
                       <option value="ai_ml">AI / ML Integration</option>
                       <option value="design">App Design / UIUX</option>
                       <option value="erp">ERP Solution</option>
+                      <option value="others">Others</option>
                     </select>
                     {errors.projectType && (
                       <span className="text-[10px] text-red-400 uppercase tracking-wider font-semibold mt-1">
                         {errors.projectType.message}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Budget Select */}
-                  <div className="flex flex-col gap-2">
-                    <label htmlFor="budget" className="text-xs uppercase tracking-widest text-[#6B7280] font-medium">
-                      Estimated Budget
-                    </label>
-                    <select
-                      id="budget"
-                      {...register("budget")}
-                      className={`w-full bg-white border ${errors.budget ? 'border-red-400' : 'border-[#E5E7EB]'} rounded-xl px-4 py-3.5 text-[#0A0A0A] appearance-none focus:outline-none focus:border-[#7C3AED] focus:ring-1 focus:ring-[#7C3AED] transition-all cursor-pointer`}
-                    >
-                      <option value="" disabled hidden>Select a range...</option>
-                      <option value="10k-25k">$10k - $25k</option>
-                      <option value="25k-50k">$25k - $50k</option>
-                      <option value="50k-100k">$50k - $100k</option>
-                      <option value="100k+">$100k+</option>
-                    </select>
-                    {errors.budget && (
-                      <span className="text-[10px] text-red-400 uppercase tracking-wider font-semibold mt-1">
-                        {errors.budget.message}
                       </span>
                     )}
                   </div>
