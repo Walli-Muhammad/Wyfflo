@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -15,7 +16,20 @@ const connectionSchema = z.object({
 
 type ConnectionFormValues = z.infer<typeof connectionSchema>;
 
-export default function ConnectionTab() {
+/* ─── Valid projectType values from the contact form ──────────────── */
+const VALID_TYPES = ["software", "ai_ml", "design", "erp", "others"] as const;
+type ValidType = (typeof VALID_TYPES)[number];
+
+function isValidType(value: string | null): value is ValidType {
+  return VALID_TYPES.includes(value as ValidType);
+}
+
+/* ─── Inner form — reads search params and pre-fills ─────────────── */
+function ContactForm() {
+  const searchParams = useSearchParams();
+  const serviceParam = searchParams.get("service");
+  const preselected = isValidType(serviceParam) ? serviceParam : "";
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -24,14 +38,22 @@ export default function ConnectionTab() {
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm<ConnectionFormValues>({
     resolver: zodResolver(connectionSchema),
     defaultValues: {
       name: "",
       email: "",
-      projectType: "",
+      projectType: preselected,
     },
   });
+
+  // Sync if the URL param changes after mount (e.g. user clicks another service card)
+  useEffect(() => {
+    if (preselected) {
+      setValue("projectType", preselected);
+    }
+  }, [preselected, setValue]);
 
   const onSubmit = async (data: ConnectionFormValues) => {
     setIsSubmitting(true);
@@ -49,6 +71,124 @@ export default function ConnectionTab() {
     setTimeout(() => setIsSuccess(false), 5000);
   };
 
+  return (
+    <div className="rounded-3xl border border-[#E5E7EB] bg-[#F5F5F7] p-8 md:p-12 overflow-hidden shadow-sm">
+      <AnimatePresence mode="wait">
+        {isSuccess ? (
+          <motion.div
+            key="success"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="flex flex-col items-center justify-center h-full min-h-[300px] text-center"
+          >
+            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#EDE9FE] border border-[#7C3AED]/30 mb-6 text-[#7C3AED]">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-8 h-8">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+              </svg>
+            </div>
+            <h3 className="font-monumental text-2xl font-bold text-[#0A0A0A] mb-2">Transmission Received</h3>
+            <p className="text-[#6B7280] text-sm max-w-[280px]">
+              We&apos;ve received your query. One of our lead architects will contact you shortly.
+            </p>
+          </motion.div>
+        ) : (
+          <motion.form
+            key="form"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col gap-6 relative z-10"
+          >
+            {/* Name Input */}
+            <div className="flex flex-col gap-2">
+              <label htmlFor="name" className="text-xs uppercase tracking-widest text-[#6B7280] font-medium">
+                Full Name
+              </label>
+              <input
+                id="name"
+                {...register("name")}
+                className={`w-full bg-white border ${errors.name ? "border-red-400" : "border-[#E5E7EB]"} rounded-xl px-4 py-3.5 text-[#0A0A0A] placeholder-[#9CA3AF] focus:outline-none focus:border-[#7C3AED] focus:ring-1 focus:ring-[#7C3AED] transition-all`}
+                placeholder="Jane Doe"
+              />
+              {errors.name && (
+                <span className="text-[10px] text-red-400 uppercase tracking-wider font-semibold mt-1">
+                  {errors.name.message}
+                </span>
+              )}
+            </div>
+
+            {/* Email Input */}
+            <div className="flex flex-col gap-2">
+              <label htmlFor="email" className="text-xs uppercase tracking-widest text-[#6B7280] font-medium">
+                Email Address
+              </label>
+              <input
+                id="email"
+                type="email"
+                {...register("email")}
+                className={`w-full bg-white border ${errors.email ? "border-red-400" : "border-[#E5E7EB]"} rounded-xl px-4 py-3.5 text-[#0A0A0A] placeholder-[#9CA3AF] focus:outline-none focus:border-[#7C3AED] focus:ring-1 focus:ring-[#7C3AED] transition-all`}
+                placeholder="jane@company.com"
+              />
+              {errors.email && (
+                <span className="text-[10px] text-red-400 uppercase tracking-wider font-semibold mt-1">
+                  {errors.email.message}
+                </span>
+              )}
+            </div>
+
+            {/* Product Type Select */}
+            <div className="flex flex-col gap-2">
+              <label htmlFor="projectType" className="text-xs uppercase tracking-widest text-[#6B7280] font-medium">
+                Product Type
+              </label>
+              <select
+                id="projectType"
+                {...register("projectType")}
+                className={`w-full bg-white border ${errors.projectType ? "border-red-400" : "border-[#E5E7EB]"} rounded-xl px-4 py-3.5 text-[#0A0A0A] appearance-none focus:outline-none focus:border-[#7C3AED] focus:ring-1 focus:ring-[#7C3AED] transition-all cursor-pointer`}
+              >
+                <option value="" disabled hidden>Select an option...</option>
+                <option value="software">Software Development</option>
+                <option value="ai_ml">AI / ML Integration</option>
+                <option value="design">App Design / UIUX</option>
+                <option value="erp">ERP Solution</option>
+                <option value="others">Others</option>
+              </select>
+              {errors.projectType && (
+                <span className="text-[10px] text-red-400 uppercase tracking-wider font-semibold mt-1">
+                  {errors.projectType.message}
+                </span>
+              )}
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="mt-4 flex items-center justify-center w-full rounded-xl bg-[#7C3AED] px-6 py-4 text-sm font-bold uppercase tracking-widest text-white transition-all hover:bg-[#6D28D9] disabled:opacity-70 disabled:cursor-not-allowed"
+            >
+              {isSubmitting ? (
+                <span className="flex items-center gap-2">
+                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Transmitting...
+                </span>
+              ) : (
+                <span>Send Request</span>
+              )}
+            </button>
+          </motion.form>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+/* ─── Section wrapper — Suspense required for useSearchParams ─────── */
+export default function ConnectionTab() {
   return (
     <section id="contact" className="py-28 md:py-40 px-6 md:px-12 bg-white">
       <div className="max-w-screen-xl mx-auto flex flex-col lg:flex-row gap-16 lg:gap-24">
@@ -91,120 +231,15 @@ export default function ConnectionTab() {
           </div>
         </div>
 
-        {/* Right Column: The Form */}
+        {/* Right Column: The Form — wrapped in Suspense for useSearchParams */}
         <div className="flex-1 max-w-xl w-full">
-          <div className="rounded-3xl border border-[#E5E7EB] bg-[#F5F5F7] p-8 md:p-12 overflow-hidden shadow-sm">
-            <AnimatePresence mode="wait">
-              {isSuccess ? (
-                <motion.div
-                  key="success"
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  className="flex flex-col items-center justify-center h-full min-h-[300px] text-center"
-                >
-                  <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#EDE9FE] border border-[#7C3AED]/30 mb-6 text-[#7C3AED]">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-8 h-8">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-                    </svg>
-                  </div>
-                  <h3 className="font-monumental text-2xl font-bold text-[#0A0A0A] mb-2">Transmission Received</h3>
-                  <p className="text-[#6B7280] text-sm max-w-[280px]">
-                    We&apos;ve received your query. One of our lead architects will contact you shortly.
-                  </p>
-                </motion.div>
-              ) : (
-                <motion.form
-                  key="form"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  onSubmit={handleSubmit(onSubmit)}
-                  className="flex flex-col gap-6 relative z-10"
-                >
-                  {/* Name Input */}
-                  <div className="flex flex-col gap-2">
-                    <label htmlFor="name" className="text-xs uppercase tracking-widest text-[#6B7280] font-medium">
-                      Full Name
-                    </label>
-                    <input
-                      id="name"
-                      {...register("name")}
-                      className={`w-full bg-white border ${errors.name ? 'border-red-400' : 'border-[#E5E7EB]'} rounded-xl px-4 py-3.5 text-[#0A0A0A] placeholder-[#9CA3AF] focus:outline-none focus:border-[#7C3AED] focus:ring-1 focus:ring-[#7C3AED] transition-all`}
-                      placeholder="Jane Doe"
-                    />
-                    {errors.name && (
-                      <span className="text-[10px] text-red-400 uppercase tracking-wider font-semibold mt-1">
-                        {errors.name.message}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Email Input */}
-                  <div className="flex flex-col gap-2">
-                    <label htmlFor="email" className="text-xs uppercase tracking-widest text-[#6B7280] font-medium">
-                      Email Address
-                    </label>
-                    <input
-                      id="email"
-                      type="email"
-                      {...register("email")}
-                      className={`w-full bg-white border ${errors.email ? 'border-red-400' : 'border-[#E5E7EB]'} rounded-xl px-4 py-3.5 text-[#0A0A0A] placeholder-[#9CA3AF] focus:outline-none focus:border-[#7C3AED] focus:ring-1 focus:ring-[#7C3AED] transition-all`}
-                      placeholder="jane@company.com"
-                    />
-                    {errors.email && (
-                      <span className="text-[10px] text-red-400 uppercase tracking-wider font-semibold mt-1">
-                        {errors.email.message}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Project Type Select */}
-                  <div className="flex flex-col gap-2">
-                    <label htmlFor="projectType" className="text-xs uppercase tracking-widest text-[#6B7280] font-medium">
-                      Product Type
-                    </label>
-                    <select
-                      id="projectType"
-                      {...register("projectType")}
-                      className={`w-full bg-white border ${errors.projectType ? 'border-red-400' : 'border-[#E5E7EB]'} rounded-xl px-4 py-3.5 text-[#0A0A0A] appearance-none focus:outline-none focus:border-[#7C3AED] focus:ring-1 focus:ring-[#7C3AED] transition-all cursor-pointer`}
-                    >
-                      <option value="" disabled hidden>Select an option...</option>
-                      <option value="software">Software Development</option>
-                      <option value="ai_ml">AI / ML Integration</option>
-                      <option value="design">App Design / UIUX</option>
-                      <option value="erp">ERP Solution</option>
-                      <option value="others">Others</option>
-                    </select>
-                    {errors.projectType && (
-                      <span className="text-[10px] text-red-400 uppercase tracking-wider font-semibold mt-1">
-                        {errors.projectType.message}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Submit Button */}
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="mt-4 flex items-center justify-center w-full rounded-xl bg-[#7C3AED] px-6 py-4 text-sm font-bold uppercase tracking-widest text-white transition-all hover:bg-[#6D28D9] disabled:opacity-70 disabled:cursor-not-allowed"
-                  >
-                    {isSubmitting ? (
-                      <span className="flex items-center gap-2">
-                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        Transmitting...
-                      </span>
-                    ) : (
-                      <span>Send Request</span>
-                    )}
-                  </button>
-                </motion.form>
-              )}
-            </AnimatePresence>
-          </div>
+          <Suspense fallback={
+            <div className="rounded-3xl border border-[#E5E7EB] bg-[#F5F5F7] p-8 md:p-12 min-h-[360px] flex items-center justify-center">
+              <div className="w-6 h-6 rounded-full border-2 border-[#7C3AED] border-t-transparent animate-spin" />
+            </div>
+          }>
+            <ContactForm />
+          </Suspense>
         </div>
       </div>
     </section>

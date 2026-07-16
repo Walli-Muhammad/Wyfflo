@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import { SERVICES, type Service } from "@/lib/data";
 
 // Service icon map using SVG paths
@@ -27,7 +28,7 @@ const ICON_SVG: Record<string, React.ReactNode> = {
   ),
 };
 
-function ServiceCard({ service, index }: { service: Service; index: number }) {
+function ServiceCard({ service, index, contactHref }: { service: Service; index: number; contactHref: string }) {
   return (
     <div
       className={`service-card group relative flex flex-col gap-5 rounded-2xl border border-[#E5E7EB] bg-white p-8 md:p-10 transition-all duration-300 hover:shadow-md hover:border-[#7C3AED] service-card-${index}`}
@@ -52,11 +53,14 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
         </p>
       </div>
 
-      {/* Arrow */}
-      <div className="mt-auto pt-4 flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[#6B7280] transition-colors duration-300 group-hover:text-[#7C3AED]">
+      {/* Learn More → scrolls to contact and pre-fills the service type */}
+      <a
+        href={contactHref}
+        className="mt-auto pt-4 flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[#6B7280] transition-colors duration-300 group-hover:text-[#7C3AED]"
+      >
         <span>Learn More</span>
         <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-      </div>
+      </a>
     </div>
   );
 }
@@ -65,6 +69,16 @@ export default function Services() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLDivElement>(null);
   const cardsWrapperRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+
+  // Build the href for each service's Learn More link.
+  // On the homepage ("/") we use a bare hash+query so the browser scrolls
+  // without a full navigation. On any other page we use an absolute path
+  // so the browser navigates to the homepage first then scrolls.
+  const buildHref = (contactType: string) =>
+    pathname === "/"
+      ? `#contact?service=${contactType}`
+      : `/?service=${contactType}#contact`;
 
   useEffect(() => {
     let ctx: any;
@@ -162,7 +176,12 @@ export default function Services() {
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6"
         >
           {SERVICES.map((service, index) => (
-            <ServiceCard key={service.id} service={service} index={index} />
+            <ServiceCard
+              key={service.id}
+              service={service}
+              index={index}
+              contactHref={buildHref(service.contactType)}
+            />
           ))}
         </div>
       </div>

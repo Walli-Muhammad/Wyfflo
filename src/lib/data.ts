@@ -3,6 +3,7 @@ export interface Service {
   title: string;
   description: string;
   icon: string; // Placeholder for icon identifier
+  contactType: string; // Maps to the contact form's projectType select value
 }
 
 export interface ProcessStep {
@@ -35,25 +36,29 @@ export const SERVICES: Service[] = [
     title: "Software Development",
     description: "We architect scalable, high-performance web and mobile applications engineered to handle complex business logic and robust user traffic without breaking a sweat.",
     icon: "code",
+    contactType: "software",
   },
   {
     id: "ai-ml-services",
     title: "AI/ML Services",
     description: "Harness the power of predictive models and intelligent automation. We integrate custom machine learning solutions that turn your raw data into actionable foresight.",
     icon: "cpu",
+    contactType: "ai_ml",
   },
   {
     id: "app-design",
     title: "App Design",
     description: "Fusing monumental aesthetics with fluid user experiences. Our design language speaks in modern geometry, glassmorphism, and intuitive interactions.",
     icon: "pen-tool",
+    contactType: "design",
   },
   {
     id: "erp-solutions",
     title: "ERP Solutions",
     description: "Streamline your enterprise operations with custom-built ERP systems. We consolidate your workflows into centralized, secure, and lightning-fast hubs.",
     icon: "database",
-  }
+    contactType: "erp",
+  },
 ];
 
 export const PROCESS: ProcessStep[] = [
