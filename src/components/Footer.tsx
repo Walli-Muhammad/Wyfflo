@@ -36,7 +36,7 @@ export default function Footer() {
               <li><a href="#" className="hover:text-white transition-colors duration-200">Contact us</a></li>
               <li><a href="#" className="hover:text-white transition-colors duration-200">About Us</a></li>
               <li><a href="#work" className="hover:text-white transition-colors duration-200">Portfolio</a></li>
-              <li><a href="#" className="hover:text-white transition-colors duration-200">App Cost Calculator</a></li>
+
               <li><a href="#" className="hover:text-white transition-colors duration-200">Privacy Policy</a></li>
             </ul>
           </div>
@@ -47,7 +47,7 @@ export default function Footer() {
             <ul className="flex flex-col gap-4 text-sm">
               <li><a href="#expertise" className="hover:text-white transition-colors duration-200">Software Development</a></li>
               <li><a href="#expertise" className="hover:text-white transition-colors duration-200">ERP Solutions</a></li>
-              <li><a href="#expertise" className="hover:text-white transition-colors duration-200">AI/ML Services</a></li>
+
               <li><a href="#" className="hover:text-white transition-colors duration-200">Kick-Off Marketing</a></li>
               <li><a href="#expertise" className="hover:text-white transition-colors duration-200">App Designing</a></li>
             </ul>
