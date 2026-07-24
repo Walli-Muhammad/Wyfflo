@@ -7,7 +7,7 @@ export default function FloatingContacts() {
     <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
       {/* LinkedIn Button */}
       <a 
-        href="#" 
+        href="https://www.linkedin.com/company/wyfflo/" 
         target="_blank" 
         rel="noopener noreferrer"
         className="w-12 h-12 rounded-full bg-[#0a66c2] text-white flex items-center justify-center shadow-lg hover:scale-110 hover:shadow-[#0a66c2]/50 transition-all duration-300"
