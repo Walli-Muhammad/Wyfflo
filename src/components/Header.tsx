@@ -12,19 +12,18 @@ export default function Header() {
   const closeMenu = () => setIsOpen(false);
 
   /**
-   * Build the correct href for a hash-based nav link.
-   *
-   * On the homepage ("/") the native anchor scroll works fine: "#work"
-   * On any other page (e.g. "/work/houwzer") we need an absolute path
-   * so the browser navigates to "/" first, then scrolls: "/#work"
-   *
-   * Using Next.js <Link> with a full /#hash path achieves this without
-   * any extra JavaScript — it is a standard HTML anchor navigation.
+   * Build the correct href for nav links.
+   * Direct hrefs (like "/portfolio") are returned as-is.
+   * Hash-based links use native hash on homepage, or "/#hash" on sub-pages.
    */
-  const navHref = (hash: string) =>
-    pathname === "/" ? hash : `/${hash}`;
+  const getLinkHref = (link: { label: string; href?: string; hash?: string }) => {
+    if (link.href) return link.href;
+    if (link.hash) return pathname === "/" ? link.hash : `/${link.hash}`;
+    return "#";
+  };
 
   const navLinks = [
+    { label: "Portfolio", href: "/portfolio" },
     { label: "Apps",      hash: "#work"      },
     { label: "Websites",  hash: "#websites"  },
     { label: "Expertise", hash: "#expertise" },
@@ -48,7 +47,7 @@ export default function Header() {
             {navLinks.map((link) => (
               <a
                 key={link.label}
-                href={navHref(link.hash)}
+                href={getLinkHref(link)}
                 className="hover:text-[#7C3AED] transition-colors duration-300"
               >
                 {link.label}
@@ -58,7 +57,7 @@ export default function Header() {
 
           {/* CTA Button */}
           <a
-            href={navHref("#contact")}
+            href={getLinkHref({ label: "Contact", hash: "#contact" })}
             className="hidden md:inline-flex items-center gap-2 rounded-full bg-[#7C3AED] px-6 py-2.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-[#6D28D9] hover:shadow-lg"
           >
             Start a Project
@@ -105,7 +104,7 @@ export default function Header() {
                   {navLinks.map((link) => (
                     <a
                       key={link.label}
-                      href={navHref(link.hash)}
+                      href={getLinkHref(link)}
                       onClick={closeMenu}
                       className="text-lg font-bold uppercase tracking-widest text-[#0A0A0A] hover:text-[#7C3AED] transition-colors font-monumental"
                     >
@@ -118,7 +117,7 @@ export default function Header() {
               {/* Mobile CTA inside Drawer */}
               <div className="flex flex-col gap-4">
                 <a
-                  href={navHref("#contact")}
+                  href={getLinkHref({ label: "Contact", hash: "#contact" })}
                   onClick={closeMenu}
                   className="w-full text-center rounded-full bg-[#7C3AED] py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-[#6D28D9]"
                 >
